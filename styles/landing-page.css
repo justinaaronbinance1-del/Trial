@@ -1,10 +1,4 @@
-*{
-  color: #05061f;
+body{
+  background-color: #05061f;
   margin-bottom: 500px;
-}
-.top-bar{
-  height: 100px;
-  width: 100%;
-  background-color: #0b0c1b;
-  
 }
