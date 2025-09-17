@@ -12,3 +12,7 @@
   margin-right: 10px;
  
 }
+.button:hover{
+  color:#0077c3;
+  cursor: pointer;
+}
