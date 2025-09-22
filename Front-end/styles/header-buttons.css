@@ -4,7 +4,8 @@
  
 
 }
-.button{
+.home-button, .health-tips-button, .about-us-button, .statistics-button, .history-button{
+  text-decoration: none;
   border: none;
   background-color: #0b0c1b;
   color: white;
@@ -12,7 +13,11 @@
   margin-right: 10px;
  
 }
-.button:hover{
+.home-button:hover,
+.health-tips-button:hover,
+.about-us-button:hover,
+.statistics-button:hover,
+.history-button:hover {
   color:#0077c3;
   cursor: pointer;
 }
