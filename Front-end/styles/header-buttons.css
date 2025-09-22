@@ -2,10 +2,11 @@
   margin-right: 10%;
   padding-top: 30px;
 }
+
 .home-button,
 .health-tips-button,
 .about-us-button,
-.statistics-button,d
+.statistics-page-button,
 .history-button {
   text-decoration: none;
   border: none;
@@ -14,10 +15,11 @@
   font-size: 20px;
   margin-right: 10px;
 }
+
 .home-button:hover,
 .health-tips-button:hover,
 .about-us-button:hover,
-.statistics-button:hover,
+.statistics-page-button:hover,
 .history-button:hover {
   color: #0077c3;
   cursor: pointer;
