@@ -1,10 +1,12 @@
 .info-container{
   display: grid;
-  margin-left: 100px;
-  margin-top: 150px;
+  margin: 250px 100px 0px 100px;
   height: 500px;
-  width: 500px;
+  width: clamp(250px 50vw 1000px);
   background-color: #26273b;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  padding: 20px;
  
  
   
