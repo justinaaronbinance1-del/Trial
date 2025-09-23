@@ -1,4 +1,10 @@
 body{
   background-color: #05061f;
-  margin-bottom: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin-bottom: 70%;
 }
+
+
