@@ -5,13 +5,17 @@ import "../styles/header-button.css";
 import "../styles/header.css";
 import "../styles/container.css";
 
+import LogoImage from "../images/logo-image.png";
+
+
+
 function LandingPage() {
   return (
     <div>
       <div className="header">
         <img
           className="image-logo"
-          src="/images/logo-image.png"
+          src={LogoImage}
           alt="Logo"
         />
 
@@ -28,11 +32,7 @@ function LandingPage() {
           <a className="about-us-button" href="/about-us-page">
             About Us
           </a>
-          <img
-            className="user-icon"
-            src="/icons/user-account.png"
-            alt="User"
-          />
+          
         </div>
       </div>
 
