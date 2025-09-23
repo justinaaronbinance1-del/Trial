@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/styles-for-all.css";
 import "../styles/landing-page.css";
-import "../styles/header-buttons.css";
+import "../styles/header-button.css";
 import "../styles/header.css";
 import "../styles/container.css";
 
