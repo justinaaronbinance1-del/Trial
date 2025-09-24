@@ -36,11 +36,11 @@ function LandingPage() {
 
   // Handle click for smooth scrolling and immediate underline update
   const handleClick = (sectionId) => (e) => {
-    e.preventDefault(); // prevent default jump
+    e.preventDefault();
     const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" }); // smooth scroll
-      setActive(sectionId); // move underline immediately
+      section.scrollIntoView({ behavior: "smooth" });
+      setActive(sectionId);
     }
   };
   //
