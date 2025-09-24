@@ -1,5 +1,5 @@
 .header {
-  height: clamp(100px, 10vw, 150px);
+  height: clamp(100px, 10vw, 100px);
   display: flex;
   flex-direction: row;
   align-items: center;

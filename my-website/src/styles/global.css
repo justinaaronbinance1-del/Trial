@@ -1,5 +1,11 @@
 body {
   font-family: "Righteous", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin-bottom: 70%;
+  background-color: #05061f;
 }
 html {
   scroll-behavior: smooth;

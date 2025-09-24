@@ -38,6 +38,10 @@
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
+.home-container {
+  height: 100vh;
+  width: 100%;
+}
 
 .statistics-info-container {
   width: 100vw;

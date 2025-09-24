@@ -9,6 +9,15 @@ import LogoImage from "../images/logo-image.png";
 
 
 function LandingPage() {
+  const [homeMarginTop, setHomeMarginTop] = useState(0);
+
+  const handleClickSimple = (sectionId, e) => {
+    e.preventDefault(); // prevent default anchor jump
+    const section = document.getElementById(sectionId);
+    if (section) section.scrollIntoView({ behavior: "smooth" });
+    setActive(sectionId);
+  };
+
 
   //Header clicking effect
 
@@ -55,7 +64,12 @@ function LandingPage() {
         />
 
         <div className="header-buttons">
-          <a href="#home" className={`button-nav-link ${active === "home" ? "active" : ""}`}>
+          <a href="#home" className={`button-nav-link ${active === "home" ? "active" : ""}`}
+            onClick={(e) => {
+              handleClickSimple("home", e);  // scroll + active update
+              setHomeMarginTop(200);         // move the home container down
+            }}
+          >
             Home
           </a>
           <a href="#statistics" className={`button-nav-link ${active === "statistics" ? "active" : ""}`}>
@@ -72,14 +86,16 @@ function LandingPage() {
       </div>
 
       <section id="home" className="home-container">
-        <div className="info-container">
+        <div className="info-container"
+          style={{ marginTop: `${homeMarginTop}px`, transition: "margin-top 0.5s" }}
+        >
           <div className="first-container all-container">1st container</div>
           <div className="second-container all-container">2nd container</div>
           <div className="third-container all-container">3rd container</div>
           <div className="fourth-container all-container">4th container</div>
         </div>
 
-        <div className="second-info-container">container</div>
+
       </section>
 
       <section id="statistics" className="statistics-info-container">
