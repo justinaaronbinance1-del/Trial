@@ -4,7 +4,6 @@ import { FaRegCircleUser } from "react-icons/fa6";
 
 
 import "../styles/global.css";
-import "../styles/landing-page.css";
 import "../styles/header-button.css";
 import "../styles/header.css";
 import "../styles/container.css";
