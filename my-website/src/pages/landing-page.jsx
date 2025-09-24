@@ -10,6 +10,7 @@ import LogoImage from "../images/logo-image.png";
 import HomeSection from "./home-section"
 
 
+
 function LandingPage() {
 
 
@@ -52,6 +53,7 @@ function LandingPage() {
 
   return (
     <div>
+
       <div className="header">
         <img
           className="image-logo"
