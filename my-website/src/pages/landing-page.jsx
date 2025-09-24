@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
+import { FaRegCircleUser } from "react-icons/fa6";
+
+
 import "../styles/global.css";
 import "../styles/landing-page.css";
 import "../styles/header-button.css";
@@ -18,6 +21,8 @@ function LandingPage() {
 
   const [active, setActive] = useState("home");
   const [homeMarginTop, setHomeMarginTop] = useState(0);
+
+
 
   useEffect(() => {
     const sections = document.querySelectorAll("section");
@@ -47,9 +52,11 @@ function LandingPage() {
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
       setActive(sectionId);
+
     }
   };
   //
+  const offsetNum = -120;
 
   return (
     <div>
@@ -64,7 +71,7 @@ function LandingPage() {
         <div className="header-buttons">
           <Link to="home"
             smooth={false}
-            offset={-120}
+            offset={offsetNum}
             className={`button-nav-link ${active === "home" ? "active" : ""}`}
           >
             Home
@@ -72,19 +79,33 @@ function LandingPage() {
 
           <Link to="statistics"
             smooth={false}
-            offset={-120}
+            offset={offsetNum}
             className={`button-nav-link ${active === "statistics" ? "active" : ""}`}>
             Statistics
           </Link>
 
-          <a href="#history" className={`button-nav-link ${active === "history" ? "active" : ""}`} >
+          <Link to="history"
+            smooth={false}
+            offset={offsetNum}
+            className={`button-nav-link ${active === "history" ? "active" : ""}`} >
             History
-          </a>
-          <a href="#about-us" className={`button-nav-link ${active === "about-us" ? "active" : ""}`} >
+          </Link>
+          <Link to="about-us"
+            smooth={false}
+            offset={offsetNum}
+            className={`button-nav-link ${active === "about-us" ? "active" : ""}`} >
             About Us
-          </a>
+          </Link>
+
+          <div className="user-icon">
+            <FaRegCircleUser size={25} color="white" />
+          </div>
+
 
         </div>
+
+
+
       </div>
 
       <HomeSection marginTop={homeMarginTop} />

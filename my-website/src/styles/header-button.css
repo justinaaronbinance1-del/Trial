@@ -1,11 +1,14 @@
 .header-buttons {
-  margin-right: 10%;
+  display: flex;
+  align-items: center;
+  padding-right: 10vw;
 }
 
 .button-nav-link {
+  display: inline-block;
   text-decoration: none;
   border: none;
-  background-color: none;
+  background-color: transparent;
   color: white;
   font-size: clamp(15px, 3vw, 18px);
   margin-right: 30px;
@@ -16,8 +19,20 @@
 .button-nav-link:hover {
   color: #0077c3;
   cursor: pointer;
+  opacity: 50%;
+  transition: all 0.5s ease;
 }
 
 .button-nav-link.active {
   border-bottom: 3px solid #0077c3;
+  font-size: calc(clamp(15px, 3vw, 18px) * 1.2);
+  transform: translateY(-5px);
+}
+.user-icon {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+  filter: drop-shadow(0 0 15px #0077c3) drop-shadow(0 0 30px #0077c3);
 }

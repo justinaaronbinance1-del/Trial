@@ -10,7 +10,7 @@ function HomeSection({ marginTop }) {
         <div className="first-container all-container">1st container</div>
         <div className="second-container all-container">2nd container</div>
         <div className="third-container all-container">3rd container</div>
-        <div className="fourth-container all-container">4th container</div>
+
       </div>
     </section>
   );
