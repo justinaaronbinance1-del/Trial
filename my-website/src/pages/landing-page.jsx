@@ -1,5 +1,5 @@
-import React from "react";
-import "../styles/styles-for-all.css";
+import React, { useState, useEffect } from "react";
+import "../styles/global.css";
 import "../styles/landing-page.css";
 import "../styles/header-button.css";
 import "../styles/header.css";
@@ -8,8 +8,43 @@ import "../styles/container.css";
 import LogoImage from "../images/logo-image.png";
 
 
-
 function LandingPage() {
+
+  //Header clicking effect
+
+  const [active, setActive] = useState("home");
+  useEffect(() => {
+    const sections = document.querySelectorAll("section");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+
+          }
+        }
+        );
+      },
+      { threshold: 0.6 }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
+  // Handle click for smooth scrolling and immediate underline update
+  const handleClick = (sectionId) => (e) => {
+    e.preventDefault(); // prevent default jump
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" }); // smooth scroll
+      setActive(sectionId); // move underline immediately
+    }
+  };
+  //
+
   return (
     <div>
       <div className="header">
@@ -20,23 +55,23 @@ function LandingPage() {
         />
 
         <div className="header-buttons">
-          <a className="home-button" href="/home-page">
+          <a href="#home" className={`button-nav-link ${active === "home" ? "active" : ""}`}>
             Home
           </a>
-          <a className="statistics-page-button" href="/statistics-page">
+          <a href="#statistics" className={`button-nav-link ${active === "statistics" ? "active" : ""}`}>
             Statistics
           </a>
-          <a className="history-button" href="/history-page">
+          <a href="#history" className={`button-nav-link ${active === "history" ? "active" : ""}`} >
             History
           </a>
-          <a className="about-us-button" href="/about-us-page">
+          <a href="#about-us" className={`button-nav-link ${active === "about-us" ? "active" : ""}`} >
             About Us
           </a>
-          
+
         </div>
       </div>
 
-      <div className="box-container">
+      <section id="home" className="home-container">
         <div className="info-container">
           <div className="first-container all-container">1st container</div>
           <div className="second-container all-container">2nd container</div>
@@ -45,7 +80,21 @@ function LandingPage() {
         </div>
 
         <div className="second-info-container">container</div>
-      </div>
+      </section>
+
+      <section id="statistics" className="statistics-info-container">
+        Statistics content here...
+      </section>
+
+      <section id="history" className="history-info-container">
+        History content here...
+      </section>
+
+      <section id="about-us" className="about-us-info-container">
+        About Us content here...
+      </section>
+
+
     </div>
   );
 }

@@ -2,22 +2,22 @@
   margin-right: 10%;
 }
 
-.home-button,
-.about-us-button,
-.statistics-page-button,
-.history-button {
+.button-nav-link {
   text-decoration: none;
   border: none;
   background-color: none;
   color: white;
   font-size: clamp(15px, 3vw, 18px);
   margin-right: 30px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
 }
 
-.home-button:hover,
-.about-us-button:hover,
-.statistics-page-button:hover,
-.history-button:hover {
+.button-nav-link:hover {
   color: #0077c3;
   cursor: pointer;
+}
+
+.button-nav-link.active {
+  border-bottom: 3px solid #0077c3;
 }

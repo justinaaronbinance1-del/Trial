@@ -1,19 +1,13 @@
 .header-buttons {
   margin-right: 10%;
-  
 }
-.user-icon{
+.user-icon {
   height: 20px;
   width: auto;
   fill: "white";
 }
 
-
-.home-button,
-.user-icon,
-.about-us-button,
-.statistics-page-button,
-.history-button {
+.button-nav-link {
   text-decoration: none;
   border: none;
   background-color: none;
@@ -22,11 +16,7 @@
   margin-right: 30px;
 }
 
-.home-button:hover,
-.user-icon,
-.about-us-button:hover,
-.statistics-page-button:hover,
-.history-button:hover {
+.button-nav-link:hover {
   color: #0077c3;
   cursor: pointer;
 }
