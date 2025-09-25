@@ -23,7 +23,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: none;
-  margin-left: 20%;
+  margin-left: 10%;
   transition: transform 0.3s ease;
 }
 .image-logo:hover {
