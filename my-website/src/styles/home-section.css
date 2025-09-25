@@ -1,0 +1,3 @@
+.home-container {
+  padding-top: clamp(7vh, 8vh, 80px);
+}

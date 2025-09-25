@@ -18,14 +18,18 @@
 }
 
 .image-logo {
-  height: 100%;
-  width: auto;
+  height: clamp(10vh, 15vh, 16vh);
+  width: clamp(10vh, 15vh, 16vh);
   border-radius: 50%;
   object-fit: cover;
   border: none;
-  margin-left: 8%;
+  margin-left: 20%;
   transition: transform 0.3s ease;
 }
 .image-logo:hover {
   filter: drop-shadow(0 0 15px #0077c3) drop-shadow(0 0 30px #0077c3);
+}
+.logo-link {
+  cursor: pointer;
+  display: inline-block;
 }

@@ -10,7 +10,7 @@
   border: none;
   background-color: transparent;
   color: white;
-  font-size: clamp(15px, 3vw, 18px);
+  font-size: clamp(15px, 3vw, 25px);
   margin-right: 30px;
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s ease;

@@ -10,13 +10,11 @@ import "../styles/container.css";
 
 import LogoImage from "../images/logo-image.png";
 import HomeSection from "./home-section"
+import IntroSection from "./intro-section"
 
 
 
 function LandingPage() {
-
-
-  //Header clicking effect
 
   const [active, setActive] = useState("home");
   const [homeMarginTop, setHomeMarginTop] = useState(0);
@@ -61,11 +59,17 @@ function LandingPage() {
     <div>
 
       <div className="header">
-        <img
-          className="image-logo"
-          src={LogoImage}
-          alt="Logo"
-        />
+        <Link to="Intro"
+          smooth={false}
+          offset={offsetNum}
+          className={`logo-link ${active === "Intro" ? "active" : ""}`}>
+          <img
+            className="image-logo"
+            src={LogoImage}
+            alt="Logo"
+          />
+        </Link>
+
 
         <div className="header-buttons">
           <Link to="home"
@@ -106,6 +110,8 @@ function LandingPage() {
 
 
       </div>
+
+      <IntroSection />
 
       <HomeSection marginTop={homeMarginTop} />
 
