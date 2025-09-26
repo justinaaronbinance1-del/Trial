@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
   margin-bottom: 70%;
   background-color: #05061f;
+  color: white;
 }
 html {
   scroll-behavior: smooth;
