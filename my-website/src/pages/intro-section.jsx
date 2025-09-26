@@ -16,12 +16,12 @@ function IntroSection() {
 
       <div className="cards">
         <div className="indiv-card">
-          <h2>📖 Project Overview</h2>
+          <h2>🧩 Project Overview</h2>
           <p>A web-based system that monitors students’ vital signs and activity. Using MAX30102 and MPU6050 sensors with
             ESP32, data is analyzed by AI to detect stress or fatigue patterns.</p>
         </div>
         <div className="indiv-card">
-          <h2>⚡ How it Works</h2>
+          <h2>🛠️ How it Works</h2>
           <p>Heart rate and motion data → Sent via ESP32 → Processed by Isolation Forest AI → Displayed live and
             historically on an interactive dashboard.</p>
         </div>
