@@ -12,11 +12,16 @@
   font-family: "Roboto", sans-serif;
 }
 .info-container > * {
-  flex: 1 1 0;
   min-width: 0;
   overflow-wrap: break-word;
   white-space: normal;
   height: 100%;
+}
+.first-container {
+  flex: 2;
+}
+.second-container {
+  flex: 1;
 }
 
 .all-container {
@@ -25,11 +30,6 @@
 .box-container {
   display: flex;
   flex-direction: column;
-}
-
-.home-container {
-  height: 100vh;
-  width: 100%;
 }
 
 .statistics-info-container {
