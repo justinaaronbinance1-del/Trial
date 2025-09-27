@@ -1,18 +1,16 @@
 .statistics-info-container {
   width: 100vw;
   height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(60px, 65px, 70px) 2rem;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-.statistics-info-container {
-  padding: 40px 20px;
+  padding: 0 2rem 2rem;
+
   text-align: center;
 }
 .statistics-info-container h2 {
@@ -27,21 +25,24 @@
   margin-bottom: 25px;
 }
 .charts-container {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 400px)
-  ); /* fixed max width per column */
+  display: flex;
+  flex-direction: row;
   gap: 20px;
-  justify-content: center; /* center the whole grid */
+  overflow-x: hidden;
+  padding: 10px;
 }
 
 .chart-box {
+  flex: 0 0 auto;
   width: 100%;
   max-width: 400px;
   background-color: #26273b;
   border-radius: 12px;
-  color: white;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  position: relative;
+  aspect-ratio: 1 / 1;
 }
 .chart-box:hover {
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(108, 99, 255, 0.4);
@@ -55,7 +56,7 @@
   color: white;
 }
 
-canvas {
+.chart-box canvas {
   width: 100% !important;
   height: 300px !important;
 }
