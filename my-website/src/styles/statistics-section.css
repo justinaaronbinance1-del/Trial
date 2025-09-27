@@ -1,0 +1,61 @@
+.statistics-info-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(60px, 65px, 70px) 2rem;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.statistics-info-container {
+  padding: 40px 20px;
+  text-align: center;
+}
+.statistics-info-container h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.statistics-info-container p {
+  font-size: 16px;
+  color: white;
+  margin-bottom: 25px;
+}
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 400px)
+  ); /* fixed max width per column */
+  gap: 20px;
+  justify-content: center; /* center the whole grid */
+}
+
+.chart-box {
+  width: 100%;
+  max-width: 400px;
+  background-color: #26273b;
+  border-radius: 12px;
+  color: white;
+}
+.chart-box:hover {
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(108, 99, 255, 0.4);
+  background: linear-gradient(145deg, #2f304a, #1f2033);
+  border: 1px solid rgba(108, 99, 255, 0.5);
+}
+
+.chart-box h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+canvas {
+  width: 100% !important;
+  height: 300px !important;
+}

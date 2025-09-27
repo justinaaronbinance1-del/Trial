@@ -11,13 +11,13 @@ import "../styles/container.css";
 import LogoImage from "../images/logo-image.png";
 import HomeSection from "./home-section"
 import IntroSection from "./intro-section"
+import StatisticsSection from "./statistics-section";
 
 
 
 function LandingPage() {
 
   const [active, setActive] = useState("home");
-  const [homeMarginTop, setHomeMarginTop] = useState(0);
 
 
 
@@ -112,12 +112,8 @@ function LandingPage() {
       </div>
 
       <IntroSection />
-
-      <HomeSection marginTop={homeMarginTop} />
-
-      <section id="statistics" className="statistics-info-container">
-        Statistics content here...
-      </section>
+      <HomeSection />
+      <StatisticsSection />
 
       <section id="history" className="history-info-container">
         History content here...

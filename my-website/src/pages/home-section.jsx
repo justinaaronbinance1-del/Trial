@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import "../styles/home-section.css";
 
-function HomeSection({ marginTop }) {
+function HomeSection() {
 
   const [time, settime] = useState(dayjs());
 
@@ -15,8 +15,7 @@ function HomeSection({ marginTop }) {
   }, []);
 
   return (
-    <section id="home" className="home-section"
-      style={{ marginTop: `${marginTop}px` }}>
+    <section id="home" className="home-section">
 
       <div
         className="info-container"

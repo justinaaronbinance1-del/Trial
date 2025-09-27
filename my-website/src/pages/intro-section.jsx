@@ -31,7 +31,7 @@ function IntroSection() {
             productivity.</p>
         </div>
         <div className="indiv-card">
-          <h2>📊 Key Features</h2>
+          <h2>✨ Key Features</h2>
           <p>Real-time data visualization, historical trends, AI-powered alerts, and easy-to-understand dashboards that
             support proactive student health management.</p>
         </div>
