@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
 
+
 import "../styles/statistics-section.css";
 
 function StatisticsSection() {
@@ -133,7 +134,7 @@ function StatisticsSection() {
 
   return (
     <section id="statistics" className="statistics-info-container">
-      <h2>📊 Activity & Health Statistics</h2>
+      <h2> Activity & Health Statistics</h2>
       <p>
         Track the student's activity levels and heart rate patterns for better health insights.
       </p>

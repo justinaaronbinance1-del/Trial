@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 
 import "../styles/home-section.css";
+import Icons from "./icon-collection";
 
 function HomeSection() {
 
@@ -23,9 +24,9 @@ function HomeSection() {
       >
         <div className="first-container ">
           <div className="time-date-info">
-            <div className="date-label">📅 Date:</div>
+            <div className="date-label"><Icons.Calendar /> Date:</div>
             <div className="date-value">{time.format("MMMM D, YYYY")}</div>
-            <div className="time-label">⏰ Time:</div>
+            <div className="time-label"><Icons.Clock /> Time:</div>
             <div className="time-value">{time.format("hh:mm:ss A")}</div>
           </div>
           <div className="device-status">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
-import { FaRegCircleUser } from "react-icons/fa6";
+
+import Icons from "./icon-collection";
 
 
 import "../styles/global.css";
@@ -9,8 +10,8 @@ import "../styles/header.css";
 import "../styles/container.css";
 
 import LogoImage from "../images/logo-image.png";
-import HomeSection from "./home-section"
-import IntroSection from "./intro-section"
+import HomeSection from "./home-section";
+import IntroSection from "./intro-section";
 import StatisticsSection from "./statistics-section";
 
 
@@ -43,6 +44,7 @@ function LandingPage() {
   }, []);
 
   // Handle click for smooth scrolling and immediate underline update
+
   const handleClick = (sectionId) => (e) => {
     e.preventDefault();
     const section = document.getElementById(sectionId);
@@ -100,8 +102,8 @@ function LandingPage() {
             About Us
           </Link>
 
-          <div className="user-icon">
-            <FaRegCircleUser size={25} color="white" />
+          <div>
+            <Icons.UserIcon />
           </div>
 
 
