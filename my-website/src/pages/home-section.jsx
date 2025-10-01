@@ -23,19 +23,19 @@ function HomeSection() {
 
       >
         <div className="first-container ">
-          <div className="time-date-info">
+          <div className="time-date-info border-effect">
             <div className="date-label"><Icons.Calendar /> Date:</div>
             <div className="date-value">{time.format("MMMM D, YYYY")}</div>
             <div className="time-label"><Icons.Clock /> Time:</div>
             <div className="time-value">{time.format("hh:mm:ss A")}</div>
           </div>
-          <div className="device-status">
+          <div className="device-status border-effect">
             <p>Device Status: </p>
             <p>Not Connected </p>
 
           </div>
-          <div className="personal-info"></div>
-          <div className="personal-info"></div>
+          <div className="personal-info-1 border-effect"></div>
+          <div className="personal-info-2 border-effect"></div>
         </div>
 
 

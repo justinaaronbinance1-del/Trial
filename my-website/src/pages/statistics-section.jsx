@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
+import dayjs from "dayjs";
 
 
 import "../styles/statistics-section.css";
@@ -10,6 +11,7 @@ function StatisticsSection() {
   const barChartRef = useRef(null);
   const heartRateChartRef = useRef(null);
 
+  const timeFormat = dayjs().format("MMMM D, YYYY");
 
   useEffect(() => {
     const activityPie = new Chart(pieChartRef.current, {
@@ -115,11 +117,23 @@ function StatisticsSection() {
             display: true,
             text: "Heart Rate & SpO₂ Trend (MAX30102)",
             font: { size: 18 },
+            color: "#ffffff",
+          },
+          legend: {
+            labels: {
+              color: "#ffffff",
+            },
           },
         },
         scales: {
-          x: { title: { display: true, text: "Time of Day" } },
-          y: { title: { display: true, text: "Values" }, beginAtZero: false },
+          x: {
+            title: { display: true, text: "Time of Day", color: "#ffffff" },
+            ticks: { color: "#ffffff" },
+          },
+          y: {
+            title: { display: true, text: "Values", color: "#ffffff" },
+            ticks: { color: "#ffffff" }, beginAtZero: false
+          },
         },
       },
     });
@@ -134,7 +148,7 @@ function StatisticsSection() {
 
   return (
     <section id="statistics" className="statistics-info-container">
-      <h2> Activity & Health Statistics</h2>
+      <h2> Activity & Health Statistics for Today ({timeFormat})</h2>
       <div className="charts-container">
 
 
@@ -147,7 +161,7 @@ function StatisticsSection() {
         </div>
 
         <div className="chart-box">
-          <h3>Activity Categories (Bar Chart)</h3>
+          <h3>Activity Categories </h3>
           <p>Visual comparison of different activity levels (in minutes)</p>
           <canvas ref={barChartRef}></canvas>
         </div>

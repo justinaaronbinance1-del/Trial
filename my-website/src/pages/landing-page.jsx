@@ -60,7 +60,7 @@ function LandingPage() {
   return (
     <div>
 
-      <div className="header">
+      <header className="header">
         <Link to="Intro"
           smooth={false}
           offset={offsetNum}
@@ -72,8 +72,7 @@ function LandingPage() {
           />
         </Link>
 
-
-        <div className="header-buttons">
+        <nav className="header-buttons">
           <Link to="home"
             smooth={false}
             offset={offsetNum}
@@ -84,7 +83,7 @@ function LandingPage() {
 
           <Link to="statistics"
             smooth={false}
-            offset={-78}
+            offset={-85}
             className={`button-nav-link ${active === "statistics" ? "active" : ""}`}>
             Statistics
           </Link>
@@ -107,11 +106,8 @@ function LandingPage() {
           </div>
 
 
-        </div>
-
-
-
-      </div>
+        </nav>
+      </header>
 
       <IntroSection />
       <HomeSection />
@@ -125,7 +121,9 @@ function LandingPage() {
         About Us content here...
       </section>
 
+      <footer>
 
+      </footer>
     </div>
   );
 }

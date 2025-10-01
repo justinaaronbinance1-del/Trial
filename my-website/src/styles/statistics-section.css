@@ -14,8 +14,8 @@
   text-align: center;
 }
 
-.statistics-info-container h2 {
-  font-size: 28px;
+.h2 {
+  font-size: clamp(15px, 25px, 30px);
   color: white;
 }
 
