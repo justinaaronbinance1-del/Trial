@@ -135,10 +135,6 @@ function StatisticsSection() {
   return (
     <section id="statistics" className="statistics-info-container">
       <h2> Activity & Health Statistics</h2>
-      <p>
-        Track the student's activity levels and heart rate patterns for better health insights.
-      </p>
-
       <div className="charts-container">
 
 

@@ -3,7 +3,7 @@
   color: white;
 }
 .react-icon {
-  margin-right: 6vw;
+  margin-right: clamp(5px, 6vw, 10px);
   color: #4da6ff;
   transition: color 0.3s ease;
 }
