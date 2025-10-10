@@ -97,7 +97,7 @@
 .first-stat-div,
 .second-stat-div {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(2, auto);
   flex: 1;
 
@@ -109,6 +109,7 @@
 
   overflow: hidden;
 }
+
 .rg {
   background-color: #ff4d4d;
   color: white;
