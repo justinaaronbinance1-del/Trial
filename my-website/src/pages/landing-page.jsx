@@ -112,10 +112,7 @@ function LandingPage() {
       <IntroSection />
       <HomeSection />
       <StatisticsSection />
-
-      <section id="history" className="history-info-container">
-        History content here...
-      </section>
+      <HistorySection />
 
       <section id="about-us" className="about-us-info-container">
         About Us content here...
