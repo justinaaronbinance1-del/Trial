@@ -13,6 +13,8 @@ import LogoImage from "../images/logo-image.png";
 import HomeSection from "./home-section";
 import IntroSection from "./intro-section";
 import StatisticsSection from "./statistics-section";
+import AboutSection from "./about-section";
+
 
 
 
@@ -112,11 +114,16 @@ function LandingPage() {
       <IntroSection />
       <HomeSection />
       <StatisticsSection />
-      <HistorySection />
 
-      <section id="about-us" className="about-us-info-container">
-        About Us content here...
+      <section id="history" className="history-info-container">
+        History content here...
       </section>
+
+      <AboutSection />
+
+
+    
+      
 
       <footer>
 
