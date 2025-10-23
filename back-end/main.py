@@ -14,24 +14,27 @@ def home():
 async def receive_data(request: Request):
     
     form_data = await request.form()
-    heart_rate = float(form_data.get("heart_rate", 0))
-    motion_num = int(form_data.get("motion", 0))
-    timestamp = datetime.now()  
+     # Safely parse all sensor fields
+    accX = float(form_data.get("accX", 0))
+    accY = float(form_data.get("accY", 0))
+    accZ = float(form_data.get("accZ", 0))
+    gX = float(form_data.get("gX", 0))
+    gY = float(form_data.get("gY", 0))
+    gZ = float(form_data.get("gZ", 0))
 
-    motion_dict = {0: "Standby", 1: "Running", 2: "Moving"}
-    motion_str = motion_dict.get(motion_num, "Unknown")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    
-    print(f"===================================")
-    print(f"ESP32 Connected at: {timestamp}")
-    print(f" Heart Rate: {heart_rate}")
-    print(f" Motion: {motion_str}")
-    print(f"===================================\n")
+    # Print in a clean format
+    print("===================================")
+    print(f"📡 Data received at: {timestamp}")
+    print(f"  ➤ Acceleration: X={accX:.2f}, Y={accY:.2f}, Z={accZ:.2f}")
+    print(f"  ➤ Gyroscope:     X={gX:.2f}, Y={gY:.2f}, Z={gZ:.2f}")
+    print("===================================\n")
 
-    
+    # Respond back to ESP32
     return {
-        "status": " received successfully",
-        "heart_rate": heart_rate,
-        "motion": motion_str,
-        "timestamp": timestamp.isoformat()
+        "status": "Data received successfully ✅",
+        "timestamp": timestamp,
+        "acceleration": {"x": accX, "y": accY, "z": accZ},
+        "gyroscope": {"x": gX, "y": gY, "z": gZ}
     }
