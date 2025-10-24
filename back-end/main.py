@@ -14,7 +14,7 @@ def home():
 async def receive_data(request: Request):
     
     form_data = await request.form()
-     # Safely parse all sensor fields
+    
     accX = float(form_data.get("accX", 0))
     accY = float(form_data.get("accY", 0))
     accZ = float(form_data.get("accZ", 0))
