@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from datetime import datetime
+from database import get_connection
 
 
 app = FastAPI()
