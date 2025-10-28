@@ -6,7 +6,7 @@ function HistorySection() {
   const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
-    // Sample data
+    // data natin dito 
     const sampleData = [
       {
         id: 1,
