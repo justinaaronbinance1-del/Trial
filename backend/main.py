@@ -1,6 +1,14 @@
 from fastapi import FastAPI, Request
 from datetime import datetime
 from database import get_connection
+import joblib
+import numpy as np
+
+rf_model = joblib.load("rf_motion_model.pkl")
+scaler = joblib.load("scaler.pkl")
+
+
+
 
 
 app = FastAPI()
@@ -25,14 +33,18 @@ async def receive_data(request: Request):
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Print in a clean format
+    features = np.array([[accX, accY, accZ, gX, gY, gZ]])
+    scaled_features = scaler.transform(features)
+    prediction = rf_model.predict(scaled_features)[0]  # Get predicted label
+
+
     print("===================================")
     print(f"📡 Data received at: {timestamp}")
     print(f"  ➤ Acceleration: X={accX:.2f}, Y={accY:.2f}, Z={accZ:.2f}")
     print(f"  ➤ Gyroscope:     X={gX:.2f}, Y={gY:.2f}, Z={gZ:.2f}")
+    print(prediction)
     print("===================================\n")
 
-    # Respond back to ESP32
     return {
         "status": "Data received successfully ✅",
         "timestamp": timestamp,
