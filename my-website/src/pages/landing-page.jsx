@@ -117,11 +117,6 @@ function LandingPage() {
       <StatisticsSection />
       <HistorySection />
       <AboutSection />
-
-
-    
-      
-
       <footer>
 
       </footer>
