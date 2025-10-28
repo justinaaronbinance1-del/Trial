@@ -14,6 +14,7 @@ import HomeSection from "./home-section";
 import IntroSection from "./intro-section";
 import StatisticsSection from "./statistics-section";
 import AboutSection from "./about-section";
+import HistorySection from "./history-section";
 
 
 
@@ -114,11 +115,7 @@ function LandingPage() {
       <IntroSection />
       <HomeSection />
       <StatisticsSection />
-
-      <section id="history" className="history-info-container">
-        History content here...
-      </section>
-
+      <HistorySection />
       <AboutSection />
 
 
