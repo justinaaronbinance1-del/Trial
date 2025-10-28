@@ -157,12 +157,14 @@
 }
 
 .stat-box {
-  min-width: 0;
-  white-space: normal;
+  white-space: nowrap;
   padding: 10px;
   border-radius: 12px;
   text-align: center;
-  font-size: clamp(12px, 2vw, 18px);
+  font-size: clamp(8px, 2vw, 18px);
+}
+.db {
+  white-space: normal;
 }
 
 .lg {
@@ -170,8 +172,9 @@
 }
 .bold {
   font-weight: bold;
-  font-size: clamp(16px, 2.5vw, 22px);
+  font-size: clamp(8px, 15px, 22px);
   padding-top: 2px;
+  white-space: nowrap;
 }
 
 .box-container {

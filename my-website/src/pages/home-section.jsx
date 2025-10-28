@@ -45,7 +45,7 @@ function HomeSection() {
             <div className="stat-box lg">Heart Rate</div>
             <div className="stat-box lg">Activity</div>
             <div className="stat-box lg">Anomally</div>
-            <div className="stat-box lg">Device Battery</div>
+            <div className="stat-box lg db">Device Battery</div>
             <div className="stat-box bold">78bpm</div>
             <div className="stat-box bold">Stationary</div>
             <div className="stat-box bold">
