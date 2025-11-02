@@ -3,17 +3,14 @@ USE health_monitoring;
 CREATE TABLE heart_rate_motion_readings(
   id INT PRIMARY KEY AUTO_INCREMENT,
   recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  # MPU6050
-  accX FLOAT,
-  accY FLOAT,
-  accZ FLOAT,
-  gyroX FLOAT,
-  gyroY FLOAT,
-  gyroZ FLOAT,
-  # MAX30102
+  ax FLOAT,
+  ay FLOAT,
+  az FLOAT,
+  gx FLOAT,
+  gy FLOAT,
+  gz FLOAT,
   heart_rate INT NOT NULL,
   spo2 FLOAT NOT NULL,
-  # ML model
   predicted_activity VARCHAR(50) DEFAULT NULL,
   stud_condition VARCHAR(20) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;

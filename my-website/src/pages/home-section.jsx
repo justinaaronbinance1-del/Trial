@@ -30,11 +30,12 @@ function HomeSection() {
             <div className="time-value">{time.format("hh:mm:ss A")}</div>
           </div>
           <div className="device-status border-effect">
-            <p>Device Status: </p>
-            <p>Not Connected </p>
+            <p>Time of Reading: </p>
+            <p>Timestamp display </p>
 
           </div>
           <div className="personal-info-1 border-effect"></div>
+
           <div className="personal-info-2 border-effect"></div>
         </div>
 
@@ -45,7 +46,7 @@ function HomeSection() {
             <div className="stat-box lg">Heart Rate</div>
             <div className="stat-box lg">Activity</div>
             <div className="stat-box lg">Anomally</div>
-            <div className="stat-box lg db">Device Battery</div>
+            <div className="stat-box lg db">Device Status</div>
             <div className="stat-box bold">78bpm</div>
             <div className="stat-box bold">Stationary</div>
             <div className="stat-box bold">
@@ -54,7 +55,7 @@ function HomeSection() {
           </div>
 
           <div className="graph-div">
-            <div>GRAPH HERE</div>
+            <div className="waveform-text">Heartbeat (PPG) waveform</div>
 
           </div>
           <div className="second-stat-div">

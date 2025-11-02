@@ -1,37 +1,58 @@
-#include <WiFi.h>
+#include <Wire.h>
 #include <HTTPClient.h>
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
+#include <WiFi.h>
+#include "MAX30105.h"
+#include "heartRate.h"
+#include "spo2_algorithm.h"
 
-Adafruit_MPU6050 mpu;
-const int MPU_INT_PIN = 15;
+#define BUFFER_SIZE 100
 
-volatile bool mpuInterrupt = false;
+const int MPU = 0x68; 
+int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
+MAX30105 particleSensor;
 
-void IRAM_ATTR dmpDataReady(){
-  mpuInterrupt = true;
-}
 
-const char* ssid = "De_Villa_Fam";      
-const char* password = "5WzSakYV";         
+const char* ssid = "De_Villa_Fam";
+const char* password = "5WzSakYV"; 
+const char* serverName = "http://192.168.1.103:8000/data"; 
 
-const char* serverName = "http://192.168.1.102:8000/data"; 
+uint32_t irBuffer[BUFFER_SIZE];
+uint32_t redBuffer[BUFFER_SIZE];
+
+
 
 void setup() {
+  Wire.begin(21, 22); 
   Serial.begin(115200);
   delay(500);
 
-  Wire.begin(21,22);
+  Serial.println("MPU6050 Test Started...");
+  Wire.beginTransmission(MPU);
+  if (Wire.endTransmission() != 0) {
+    Serial.println("MPU6050 not detected!");
+    while (1);
+  } else {
+    Serial.println("MPU6050 detected successfully!");
+  }
 
-  Wire.beginTransmission(0x68);
-  Wire.write(0x68);
-  Wire.write(0x00);
-  Wire.endTransmission(true);
+  Serial.println("MAX30102 Test Started...");
+
+  if(!particleSensor.begin(Wire, I2C_SPEED_STANDARD)){
+    Serial.println("MAX30102 not found!");
+    while(1);
+  }
+  Serial.println("MAX30102 detected succesfully");
+  particleSensor.setup();
+  particleSensor.setPulseAmplitudeRed(0x1F);
+  particleSensor.setPulseAmplitudeIR(0x1F);
+  particleSensor.setPulseAmplitudeGreen(0);
+
+  Serial.println("Place your finger on the sensor...");
+
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
   
-
-  WiFi.mode(WIFI_STA);           
-  WiFi.begin(ssid, password);  
-
   Serial.print("Connecting to WiFi");
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -40,77 +61,85 @@ void setup() {
   }
 
   Serial.println();
-  Serial.println("✅ Connected to WiFi!");
+  Serial.println("Connected to WiFi!");
   Serial.print("ESP32 IP Address: ");
   Serial.println(WiFi.localIP());
 
-  pinMode(MPU_INT_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(MPU_INT_PIN), dmpDataReady, RISING);
-
-  if (!mpu.begin()){
-    Serial.println("MPU not found");
-    while(1);
-  }
-  Serial.println("MPU Ready");
+  Wire.beginTransmission(MPU);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
 }
+
+
 
 void loop() {
 
-  byte error, address;
-  int nDevices = 0;
+  String timestamp = String(millis());
 
-  for (address = 1; address < 127; address++) {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
+  Wire.beginTransmission(MPU);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU, 14, true);
 
-    if (error == 0) {
-      Serial.print("✅ I2C device found at address 0x");
-      Serial.println(address, HEX);
-      nDevices++;
+  AcX = Wire.read() << 8 | Wire.read();
+  AcY = Wire.read() << 8 | Wire.read();
+  AcZ = Wire.read() << 8 | Wire.read();
+  GyX = Wire.read() << 8 | Wire.read();
+  GyY = Wire.read() << 8 | Wire.read();
+  GyZ = Wire.read() << 8 | Wire.read();
+
+  Serial.printf("AcX=%d | AcY=%d | AcZ=%d | GyX=%d | GyY=%d | GyZ=%d\n", AcX, AcY, AcZ, GyX, GyY, GyZ);
+
+  for (int i = 0; i< BUFFER_SIZE; i++){
+    while(!particleSensor.check()){
+      delay(1);
     }
+    redBuffer[i] = particleSensor.getRed();
+    irBuffer[i] = particleSensor.getIR();
+    delay(40);
   }
 
-  if (nDevices == 0) {
-    Serial.println("❌ No I2C devices found");
-  }else{
-    Serial.println("Scan complete.\n");
-  }
-  delay(2000);
+int32_t spo2;
+int8_t validspo2;
+int32_t heartRate;
+int8_t validheartRate;
+
+maxim_heart_rate_and_oxygen_saturation(
+    irBuffer, BUFFER_SIZE,
+    redBuffer,
+    &spo2, &validspo2,
+    &heartRate, &validheartRate);
+  
+  // Display results
+  Serial.print("Heart Rate: ");
+  if (validheartRate)
+    Serial.print(heartRate);
+  else
+    Serial.print("Invalid");
+  
+  Serial.print(" bpm | SpO2: ");
+  if (validspo2)
+    Serial.print(spo2);
+  else
+    Serial.print("Invalid");
+  
+  Serial.println(" %");
 
 
+  if(WiFi.status() == WL_CONNECTED){
+  HTTPClient http;
 
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
+  http.begin(serverName);
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    http.begin(serverName);
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded"); 
-
-    sensors_event_t a, g, temp;
-
-    if(mpuInterrupt){
-      mpuInterrupt = false;
-      
-      mpu.getEvent(&a, &g, &temp);
-    } else {
-      
-      mpu.getEvent(&a, &g, &temp);
-    }
-
-
-    Serial.print("accX: "); Serial.print(a.acceleration.x);
-    Serial.print(", accY: "); Serial.print(a.acceleration.y);
-    Serial.print(", accZ: "); Serial.print(a.acceleration.z);
-    Serial.print(" | gX: "); Serial.print(g.gyro.x);
-    Serial.print(", gY: "); Serial.print(g.gyro.y);
-    Serial.print(", gZ: "); Serial.println(g.gyro.z);
-    
-
-    String httpRequestData = "accX = " + String(a.acceleration.x, 8) + 
-                              "&accY=" + String(a.acceleration.y, 8)+ 
-                              "&accZ = " + String(a.acceleration.z, 8) + 
-                              "&gX = " + String(g.gyro.x, 8) + 
-                              "&gY = "+ String(g.gyro.y, 8)+ 
-                              "&gZ = " + String(g.gyro.z, 8);
+  String httpRequestData = "ax=" + String(AcX) + 
+                              "&ay=" + String(AcY)+ 
+                              "&az=" + String(AcZ) + 
+                              "&gx=" + String(GyX) + 
+                              "&gy="+ String(GyY)+ 
+                              "&gz=" + String(GyZ) +
+                              "&timestamp=" + String(timestamp);
 
 
     Serial.println("Sending POST data: " + httpRequestData);
@@ -118,23 +147,22 @@ void loop() {
     int httpResponseCode = http.POST(httpRequestData);
 
     if (httpResponseCode > 0) {
-      Serial.print("✅ HTTP Response code: ");
+      Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
 
       String payload = http.getString();
       Serial.println("Server Response:");
       Serial.println(payload);
     } else {
-      Serial.print("❌ Error code: ");
+      Serial.print("Error code: ");
       Serial.println(httpResponseCode);
     }
 
     http.end();  
 
   } else {
-    Serial.println("❌ WiFi Disconnected");
+    Serial.println("WiFi Disconnected");
   }
 
-  delay(2000);  
+  delay(1000);
 }
-

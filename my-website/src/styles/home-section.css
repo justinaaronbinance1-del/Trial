@@ -122,10 +122,14 @@
   font-size: clamp(12px, 2vw, 16px);
 }
 .graph-div {
+  align-items: center;
   background: #1a1b2f;
   flex: 2;
   border-radius: 12px;
   margin-bottom: 15px;
+}
+.waveform-text {
+  text-align: center;
 }
 .graph-div:hover {
   transform: translateY(-3px);

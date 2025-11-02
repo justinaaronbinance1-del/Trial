@@ -15,6 +15,7 @@ import IntroSection from "./intro-section";
 import StatisticsSection from "./statistics-section";
 import AboutSection from "./about-section";
 import HistorySection from "./history-section";
+import FooterSection from "./footer-section";
 
 
 
@@ -117,9 +118,8 @@ function LandingPage() {
       <StatisticsSection />
       <HistorySection />
       <AboutSection />
-      <footer>
+      <FooterSection />
 
-      </footer>
     </div>
   );
 }
