@@ -1,0 +1,14 @@
+footer {
+  /* DREI IKAW NA BAHALA SA DESIGN*/
+  position: relative;
+  left: 50%;
+  right: 50%;
+  height: 300px;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: #000;
+  color: #fff;
+  padding: 20px 0;
+  box-sizing: border-box;
+}

@@ -46,7 +46,6 @@ async def receive_data(request: Request):
                 max_heartrate, min_heartrate
             )
 
-
             sql = """ 
                 INSERT INTO heart_rate_motion_readings (recorded_at, ax, ay, az, gx, gy, gz, heart_rate, spo2, predicted_activity, stud_condition)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -110,7 +109,7 @@ def predict_activity(ax, ay, az, gx, gy, gz):
        return "Walking"
 
 def predict_condition(state, heartRate_stat):
-     if heartRate_stat == "⚠️ No valid heart rate!":
+     if heartRate_stat == None:
         return  "No valid heart rate!"
      elif state == "Walking":
           if 190 < heartRate_stat:
@@ -130,8 +129,8 @@ def predict_condition(state, heartRate_stat):
           return "Normal"
    
 def validate_vital_signs(heartRate, spo2):
-    heartRate_stat = heartRate if heartRate not in [999, -999, 0] else "⚠️ No valid heart rate!"
-    spo2_stat = spo2 if spo2 not in [999, -999, 0] else "⚠️ No valid SpO₂!"
+    heartRate_stat = heartRate if heartRate not in [999, -999, 0] else None
+    spo2_stat = spo2 if spo2 not in [999, -999, 0] else None
     return heartRate_stat, spo2_stat
     
 def summary_compute(cursor):
@@ -140,6 +139,9 @@ def summary_compute(cursor):
     """) 
        avg_heartrate, max_heartrate, min_heartrate = cursor.fetchone()
        return avg_heartrate, max_heartrate, min_heartrate
+
+def push_summary_db(cursor):
+     
 
      
 def print_sensor_log(timestamp, ax, ay, az, gx, gy, gz, state, heartRate_stat, spo2_stat, stud_condition, avg_heartrate, max_heartrate,
@@ -153,7 +155,7 @@ def print_sensor_log(timestamp, ax, ay, az, gx, gy, gz, state, heartRate_stat, s
     print(f"  ➤ Heart Rate:    {heartRate_stat}")
     print(f"  ➤ SpO₂:          {spo2_stat}")
     print(f"  ➤ Student Condition:          {stud_condition}")
-    print(f"  ➤ AVG Heart Rate:          {int(avg_heartrate)}")
+    print(f"  ➤ AVG Heart Rate:          {avg_heartrate}")
     print(f"  ➤ Max Heart Rate:          {max_heartrate}")
     print(f"  ➤ Min Heart Rate:          {min_heartrate}")
     print("===================================\n")    

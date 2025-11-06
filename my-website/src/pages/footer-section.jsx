@@ -3,7 +3,7 @@ import "../styles/footer-section.css";
 
 function FooterSection() {
   return (
-    <footer className="footer">
+    <footer>
       <p>© 2025 My Website. All rights reserved.</p>
     </footer>
   );

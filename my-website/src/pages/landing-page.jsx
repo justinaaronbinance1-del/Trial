@@ -120,6 +120,7 @@ function LandingPage() {
       <AboutSection />
       <FooterSection />
 
+
     </div>
   );
 }
