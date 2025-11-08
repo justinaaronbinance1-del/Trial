@@ -14,9 +14,9 @@ MAX30105 particleSensor;
 
 
 
-const char* ssid = "De_Villa_Fam";
-const char* password = "5WzSakYV";
-const char* http_server = "http://192.168.1.102:8000/data";
+const char* ssid = "gold";
+const char* password = "wathafenvelA";
+const char* http_server = "http://192.168.18.22:8000/data";
 
 
 
