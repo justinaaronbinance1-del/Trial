@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 
-import Icons from "./icon-collection";
-
 
 import "../styles/global.css";
 import "../styles/header-button.css";
@@ -16,8 +14,6 @@ import StatisticsSection from "./statistics-section";
 import AboutSection from "./about-section";
 import HistorySection from "./history-section";
 import FooterSection from "./footer-section";
-
-
 
 
 function LandingPage() {
@@ -105,9 +101,7 @@ function LandingPage() {
             About Us
           </Link>
 
-          <div>
-            <Icons.UserIcon />
-          </div>
+
 
 
         </nav>

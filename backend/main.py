@@ -5,15 +5,23 @@ from ml_models import rf_model, scaler, predict_activity, predict_condition
 from sensors_data import load_sensor_data, validate_vital_signs
 from compute_and_push import summary_compute, push_summary_db
 from print_logs import print_sensor_log
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173/"],   
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
 def home():
     return {"message": "IOT Dashboard Backend is running!"}
-
 
 @app.post("/data")
 async def receive_data(request: Request):
@@ -81,4 +89,39 @@ async def receive_data(request: Request):
         "Min Heart Rate": min_heartrate,
         "Number of HR Readings": reading_count
     }  
+
+@app.get("/latest")
+def get_latest_sensor_data():
+     try:
+          connection = get_connection()
+          cursor = connection.cursor(dictionary=True)
+
+          cursor.execute("""
+                SELECT * FROM heart_rate_motion_readings ORDER BY recorded_at DESC LIMIT 1
+            """)
+          latest_data = cursor.fetchone()
+
+          if not latest_data:
+               return {"status": "No data found"}
+
+          cursor.execute("""
+            SELECT avg_heart_rate, min_heart_rate, max_heart_rate, total_readings 
+            FROM heart_rate_summary
+            ORDER BY recorded_at DESC LIMIT 1
+        """)
+          summary_data = cursor.fetchone()
+
+        
+          combined_data = {**latest_data, **(summary_data or {})}
+
+          return combined_data
+
+     except mysql.connector.Error as e:
+        return {"error": f"Database error: {e}"}
+
+     finally:
+           if connection.is_connected():
+            cursor.close()
+            connection.close()
+               
 
