@@ -3,58 +3,118 @@ import dayjs from "dayjs";
 import { Textfit } from 'react-textfit';
 
 import "../styles/home-section.css";
-import Icons from "./icon-collection";
 import SensorData from "./connection-backend";
 
 function HomeSection() {
 
-  const [time, settime] = useState(dayjs());
+
   const [sensorData, setSensorData] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [username, setUsername] = useState("");
+
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value); // Update state when input changes
+  };
+
+  const handleClick = async () => {
+    if (!inputValue.trim()) return alert("Please enter a username!");
+
+    const formData = new FormData();
+    formData.append("username", inputValue.trim());
+
+    try {
+      const response = await fetch("http://localhost:8000/register_user", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+      console.log("Register user result: ", result);
+
+      if (result.status.toLowerCase() === "success") {
+        alert(result.message);
+        setUsername(result.username); // pass this to SensorData
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error registering:", error);
+      alert("Failed to register user.");
+    }
+    setInputValue("");
+  };
 
   const {
-    recorded_at = "-", ax = "-", ay = "-", az = "-", gx = "-", gy = "-", gz = "-", heart_rate = "-", spo2 = "-", predicted_activity = "-", stud_condition = "-", avg_heart_rate = "-", min_heart_rate = "-", max_heart_rate = "-", total_readings = "-"
+    recorded_at = "--", ax = "--", ay = "--", az = "--", gx = "--", gy = "--", gz = "--", heart_rate = "--", spo2 = "--", predicted_activity = "--", stud_condition = "--", avg_heart_rate = "--", min_heart_rate = "--", max_heart_rate = "--", total_readings = "--", device_status = "Disconnected"
   } = sensorData || {};
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      settime(dayjs());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const timestamp = recorded_at;
+  const readableTime = dayjs(timestamp).format("MMM. D, YYYY | h:mmA");
+
+  function studentCondition(condition) {
+    let message;
+
+    if (condition === "Normal") {
+      return "Normal";
+    } else if (condition === "No valid heart rate!") {
+      return "Not Valid!";
+    } else if (!condition || condition === "--") {
+      return "--"
+
+    } else {
+      return "Anomally!"
+    }
+  }
+
+  let condition_of_student = studentCondition(stud_condition);
+
+  const statusColor = device_status === "Connected" ? "green" : "red";
 
   return (
     <section id="home" className="home-section">
+      {
+        username && (
 
-      <SensorData setParentData={setSensorData} />
+          <SensorData
+            username={username}
+            setLatestData={setSensorData} />
+        )}
 
       <div
         className="info-container"
 
       >
         <div className="first-container ">
-          <div className="time-date-info border-effect">
-            <div className="date-label"><Icons.Calendar /> Date:</div>
-            <div className="date-value">{time.format("MMMM D, YYYY")}</div>
-            <div className="time-label"><Icons.Clock /> Time:</div>
-            <div className="time-value">{time.format("hh:mm:ss A")}</div>
+          <div className="user-and-button">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleChange}
+              placeholder="Type your name..."
+            />
+            <button onClick={handleClick}>Submit</button>
           </div>
+
           <div className="device-status border-effect">
-            <Textfit mode="single" min={8} max={16}><p>Time of Reading:</p></Textfit>
-            <Textfit mode="single" min={8} max={16}>  <p>{recorded_at}</p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusColor, display: "inline-block", }}></span>Device: <span style={{ color: statusColor }}>{device_status}</span></p></Textfit>
+            <Textfit mode="single" min={8} max={16}>  <p>User: {username}</p></Textfit>
 
 
-          </div>
-          <div className="sensor-info-1 border-effect" >
-            <Textfit mode="single" min={8} max={16}><p>Motion Sensor</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>AX:{ax} AY:{ay} AZ:{az}</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>GX:{gx} GY:{gy} GZ:{gz}</p></Textfit>
           </div>
 
           <div className="sensor-info-1 border-effect">
-            <Textfit mode="single" min={8} max={16}><p>Heart Rate & Oxygen Level</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>HR: {heart_rate} BPM</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>SPO2: {spo2} %</p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p>Time of Reading: </p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p>{recorded_at}</p></Textfit>
+
           </div>
+
+          <div className="sensor-info-1 border-effect" >
+            <Textfit mode="single" min={8} max={16}><p>Motion Sensor</p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p>AX:{ax} | AY:{ay} | AZ:{az}</p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p>GX:{gx} | GY:{gy} | GZ:{gz}</p></Textfit>
+          </div>
+
+
         </div>
 
 
@@ -63,13 +123,13 @@ function HomeSection() {
           <div className="first-stat-div">
             <div className="stat-box lg">Heart Rate</div>
             <div className="stat-box lg">Activity</div>
-            <div className="stat-box lg">Anomally</div>
-            <div className="stat-box lg db">Device Status</div>
+            <div className="stat-box lg">Condition</div>
+            <div className="stat-box lg db">Oxygen Level</div>
             <div className="stat-box bold">{heart_rate} BPM</div>
             <div className="stat-box bold">{predicted_activity}</div>
             <div className="stat-box bold">
-              <p className="rg">{stud_condition}</p></div>
-            <div className="stat-box bold">Connected</div>
+              {condition_of_student}</div>
+            <div className="stat-box bold">{spo2} %</div>
           </div>
 
           <div className="graph-div">
@@ -80,7 +140,7 @@ function HomeSection() {
             <div className="stat-box lg">Avg HR (24hr)</div>
             <div className="stat-box lg">Max HR</div>
             <div className="stat-box lg">Min HR</div>
-            <div className="stat-box lg">Anomalies</div>
+            <div className="stat-box lg">Readings</div>
             <div className="stat-box bold">{avg_heart_rate} BPM</div>
             <div className="stat-box bold">{max_heart_rate} BPM</div>
             <div className="stat-box bold">{min_heart_rate} BPM</div>

@@ -56,39 +56,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 }
-.time-date-info {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, auto);
-  font-family: "Courier New", monospace;
-  font-size: clamp(14px, 1.2vw, 18px);
-  color: #f5f5f5;
-  padding: 0 clamp(2px, 5px, 10vw) 0 clamp(2px, 5px, 10vw);
-}
-
-.time-date-info,
-.date-label,
-.time-label {
-  font-size: clamp(12px, 2vw, 18px);
-  font-weight: bold;
-  color: #d1d1e9;
-  padding-top: 10px;
-}
-
-.time-date-info .date-value {
-  letter-spacing: 1px;
-  color: #ffffff;
-}
-
-.time-date-info .time-value {
-  font-weight: bold;
-  color: white;
-}
-.date-value,
-.time-value {
-  padding: clamp(2px, 10px, 100%) 0 0 0;
-}
 
 .second-container {
   display: flex;
@@ -112,17 +79,6 @@
   overflow: hidden;
 }
 
-.rg {
-  background-color: #ff4d4d;
-  color: white;
-  padding: 2px 12px 5px 12px;
-  display: inline-block;
-  text-align: center;
-  font-weight: bold;
-  margin: 0;
-  border-radius: 20px;
-  font-size: clamp(12px, 2vw, 16px);
-}
 .graph-div {
   align-items: center;
   background: #1a1b2f;
@@ -148,8 +104,7 @@
 .first-stat-div:hover,
 .second-stat-div:hover,
 .device-status:hover,
-.sensor-info-1:hover,
-.time-date-info:hover {
+.sensor-info-1:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
 
@@ -165,7 +120,6 @@
 .stat-box {
   white-space: nowrap;
   padding: 10px;
-  border-radius: 12px;
   text-align: center;
   font-size: clamp(8px, 2vw, 18px);
 }
@@ -186,4 +140,57 @@
 .box-container {
   display: flex;
   flex-direction: column;
+}
+
+.user-and-button {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0 clamp(2px, 10px, 10vw) 0 clamp(2px, 10px, 10vw);
+}
+/* Container for layout newly added*/
+
+/* Stylish input */
+.user-and-button input {
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #2f304a, #1f2033);
+  color: #ccc;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.user-and-button input::placeholder {
+  color: #aaa;
+}
+
+.user-and-button input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), 0 0 25px rgba(108, 99, 255, 0.8);
+}
+
+/* Stylish button */
+.user-and-button button {
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #2f304a, #1f2033);
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.user-and-button button:hover {
+  background: linear-gradient(180deg, #3a3b5a, #26263d);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(108, 99, 255, 0.8);
+}
+
+.user-and-button button:active {
+  transform: scale(0.97);
 }

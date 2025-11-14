@@ -1,7 +1,7 @@
 
 
 
-def print_sensor_log(timestamp, ax, ay, az, gx, gy, gz, state, heartRate_stat, spo2_stat, stud_condition, avg_heartrate, max_heartrate,
+def print_sensor_log(user_id, username, timestamp, ax, ay, az, gx, gy, gz, state, heartRate_stat, spo2_stat, stud_condition, avg_heartrate, max_heartrate,
                      min_heartrate, reading_count):
    
     print("===================================")

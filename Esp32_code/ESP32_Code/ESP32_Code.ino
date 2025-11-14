@@ -162,7 +162,9 @@ void loop() {
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     String timestamp = String(millis());
-    String httpRequestData = "ax=" + String(AcX) +
+    int userId = 1;
+    String httpRequestData = "user_id" + String(userId) +
+                              "ax=" + String(AcX) +
                              "&ay=" + String(AcY) +
                              "&az=" + String(AcZ) +
                              "&gx=" + String(GyX) +
