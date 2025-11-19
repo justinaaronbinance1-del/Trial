@@ -14,18 +14,13 @@ const SensorData = ({ username, setLatestData, setDailyData }) => {
       try {
         console.log("Attempting to fetch latest data for:", username);
 
-        const response = await fetch(`${BACKEND_URL_LATEST}?username=${encodeURIComponent(username)}`);
+        const response = await fetch(BACKEND_URL_LATEST);
 
         console.log("Response status:", response.status);
         const data = await response.json();
         console.log("Received data:", data);
 
-        const newData = Array.isArray(data) ? data : [data];
-
-        setLatestData(prev => {
-          const combined = [...(prev || []), ...newData].filter((v, i, a) => a.findIndex(x => x.timestamp === v.timestamp) === i); // append new reading(s)
-          return combined.slice(-10); // keep only latest 10
-        });
+        setLatestData(data);
 
         setLoading(false);
       } catch (error) {
@@ -34,7 +29,7 @@ const SensorData = ({ username, setLatestData, setDailyData }) => {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 5000);
+    const interval = setInterval(fetchData, 2000);
     return () => clearInterval(interval);
   }, [setLatestData, username]);
 

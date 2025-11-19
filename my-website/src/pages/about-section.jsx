@@ -56,9 +56,9 @@ function AboutSection() {
 
             <div className="tech-card">
               <div className="tech-icon">🧠</div>
-              <h3 className="tech-name">AI Analytics</h3>
+              <h3 className="tech-name">ML Algorithms</h3>
               <p className="tech-description">
-                Isolation Forest algorithm for anomaly detection
+                Random Forest algorithm for anomaly detection
               </p>
             </div>
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import dayjs from "dayjs";
+
 
 import "../styles/statistics-section.css";
 import SensorData from "./connection-backend";
 
 function StatisticsSection() {
-  const timeFormat = dayjs().format("MMMM D, YYYY");
+
 
   // State for daily data
   const [dailyData, setDailyData] = useState([]);
@@ -115,7 +115,7 @@ function StatisticsSection() {
   return (
     <section id="statistics" className="statistics-info-container">
       <SensorData setDailyData={setDailyData} />
-      <h2>Activity & Health Statistics for Today ({timeFormat})</h2>
+      <h2>Activity & Health Statistics </h2>
       <div className="charts-container">
         <div className="chart-box">
           <h3>Activity Breakdown</h3>

@@ -45,11 +45,9 @@ function HomeSection() {
   };
 
   const {
-    recorded_at = "--", ax = "--", ay = "--", az = "--", gx = "--", gy = "--", gz = "--", heart_rate = "--", spo2 = "--", predicted_activity = "--", stud_condition = "--", avg_heart_rate = "--", min_heart_rate = "--", max_heart_rate = "--", total_readings = "--", device_status = "Disconnected"
+    timestamp = "--", ax = "--", ay = "--", az = "--", gx = "--", gy = "--", gz = "--", heart_rate = "--", spo2 = "--", predicted_activity = "--", stud_condition = "--", avg_heartrate = "--", min_heartrate = "--", max_heartrate = "--", reading_count = "--", device_status = "Disconnected"
   } = sensorData || {};
 
-  const timestamp = recorded_at;
-  const readableTime = dayjs(timestamp).format("MMM. D, YYYY | h:mmA");
 
   function studentCondition(condition) {
     let message;
@@ -69,6 +67,7 @@ function HomeSection() {
   let condition_of_student = studentCondition(stud_condition);
 
   const statusColor = device_status === "Connected" ? "green" : "red";
+  const formattedTime = dayjs(timestamp).format("MMM DD, YYYY | hh:mm A");
 
   return (
     <section id="home" className="home-section">
@@ -99,12 +98,11 @@ function HomeSection() {
             <Textfit mode="single" min={8} max={16}><p style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusColor, display: "inline-block", }}></span>Device: <span style={{ color: statusColor }}>{device_status}</span></p></Textfit>
             <Textfit mode="single" min={8} max={16}>  <p>User: {username}</p></Textfit>
 
-
           </div>
 
           <div className="sensor-info-1 border-effect">
             <Textfit mode="single" min={8} max={16}><p>Time of Reading: </p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>{recorded_at}</p></Textfit>
+            <Textfit mode="single" min={8} max={16}><p>{formattedTime}</p></Textfit>
 
           </div>
 
@@ -114,10 +112,7 @@ function HomeSection() {
             <Textfit mode="single" min={8} max={16}><p>GX:{gx} | GY:{gy} | GZ:{gz}</p></Textfit>
           </div>
 
-
         </div>
-
-
 
         <div className="second-container ">
           <div className="first-stat-div">
@@ -141,10 +136,10 @@ function HomeSection() {
             <div className="stat-box lg">Max HR</div>
             <div className="stat-box lg">Min HR</div>
             <div className="stat-box lg">Readings</div>
-            <div className="stat-box bold">{avg_heart_rate} BPM</div>
-            <div className="stat-box bold">{max_heart_rate} BPM</div>
-            <div className="stat-box bold">{min_heart_rate} BPM</div>
-            <div className="stat-box bold">{total_readings}</div>
+            <div className="stat-box bold">{avg_heartrate} BPM</div>
+            <div className="stat-box bold">{max_heartrate} BPM</div>
+            <div className="stat-box bold">{min_heartrate} BPM</div>
+            <div className="stat-box bold">{reading_count}</div>
           </div>
         </div>
 

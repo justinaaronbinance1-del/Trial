@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
+#include "time.h"
+#include <ArduinoJson.h>
 #include "MAX30105.h"
 #include "heartRate.h"
 #include "spo2_algorithm.h"
@@ -14,10 +16,13 @@ MAX30105 particleSensor;
 
 
 
-const char* ssid = "gold";
-const char* password = "wathafenvelA";
-const char* http_server = "http://192.168.18.22:8000/data";
+const char* ssid = "Galaxy A52 BC6F";
+const char* password = "ujmy8671";
+const char* http_server = "http://10.12.239.157:8000/data";
 
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 8 * 3600;  // Philippines GMT+8
+const int daylightOffset_sec = 0;   //no dst
 
 
 
@@ -32,6 +37,10 @@ unsigned long lastSampleTime = 0;
 const int sampleInterval = 40;   // ~25Hz sampling for smooth waveform
 const int computeInterval = 5000;
 const int sendInterval = 5000;   // Compute HR & SpO₂ every 5 seconds
+int userId = -1;
+String dynamicUsername = "";
+unsigned long lastUserFetch = 0;
+const unsigned long userFetchInterval = 3000;
 
 long irValue = 0;
 long redValue = 0;
@@ -57,8 +66,6 @@ void setup() {
   }
   
  
-
-  
    Serial.println("MAX30102 Test Started...");
   if (!particleSensor.begin(Wire, I2C_SPEED_STANDARD)) {
      Serial.println("MAX30102 not found!");
@@ -85,14 +92,33 @@ void setup() {
    Serial.println("\nConnected to WiFi!");
    Serial.print("ESP32 IP Address: ");
    Serial.println(WiFi.localIP());
-  
-  
+
+   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+   Serial.println("Waiting NTP time...");
+
+   struct tm timeinfo;
+   while (!getLocalTime(&timeinfo)){
+      Serial.print(".");
+      delay(500);
+   }
+  Serial.println("\nTime acquired!");
   
   Wire.beginTransmission(MPU);
   Wire.write(0x6B);
   Wire.write(0);
   Wire.endTransmission(true);
   delay(1000);
+
+  Serial.println("Registering device with backend...");
+  while(userId < 0 ){
+    if(fetchCurrentUser()){
+      Serial.println("User Registration Successful!");
+    }else{
+      Serial.println("Retrying registration in 3 seconds...");
+      delay(3000);
+    }
+  }
+   Serial.println("UserID: " + String(userId) + ", Username: " + dynamicUsername);
 }
 
 void loop() {
@@ -111,6 +137,11 @@ void loop() {
   GyX = Wire.read() << 8 | Wire.read();
   GyY = Wire.read() << 8 | Wire.read();
   GyZ = Wire.read() << 8 | Wire.read();
+
+  if (millis() - lastUserFetch >= userFetchInterval){
+    fetchCurrentUser();
+    lastUserFetch = millis();
+  }
 
 
   if (currentTime - lastSampleTime >= sampleInterval) {
@@ -155,16 +186,17 @@ void loop() {
   }
 
   
-  if (WiFi.status() == WL_CONNECTED && currentTime - lastSendTime >= sendInterval) {
+  if (userId > 0 && WiFi.status() == WL_CONNECTED && currentTime - lastSendTime >= sendInterval) {
     lastSendTime = currentTime;
     HTTPClient http;
     http.begin(http_server);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    String timestamp = String(millis());
-    int userId = 1;
-    String httpRequestData = "user_id" + String(userId) +
-                              "ax=" + String(AcX) +
+    String timestamp = getTimestamp();
+
+    String httpRequestData = "user_id=" + String(userId) +
+                            "&username=" + dynamicUsername +
+                            "&ax=" + String(AcX) +
                              "&ay=" + String(AcY) +
                              "&az=" + String(AcZ) +
                              "&gx=" + String(GyX) +
@@ -176,7 +208,6 @@ void loop() {
 
     Serial.println("Sending POST data: " + httpRequestData);
     int httpResponseCode = http.POST(httpRequestData);
-
 
 
     if (httpResponseCode > 0) {
@@ -195,3 +226,52 @@ void loop() {
   }
 }
 
+
+bool fetchCurrentUser(){
+  if (WiFi.status() != WL_CONNECTED) return false;
+
+  HTTPClient http;
+  http.begin("http://10.12.239.157:8000/current_user");
+
+  int httpResponseCode = http.GET();
+  
+  if (httpResponseCode > 0){
+    String payload = http.getString();
+    Serial.println("Server Response: " + payload);
+
+   StaticJsonDocument<300> doc;
+   DeserializationError error = deserializeJson(doc, payload);
+
+   if(error){
+    Serial.print("JSON parsing failed:");
+    Serial.println(error.c_str());
+    http.end();
+    return false;
+   }
+
+
+  userId = doc["user_id"];
+  dynamicUsername = doc["username"].as<String>();
+
+  Serial.println("Fetched User ID: " + String(userId));
+  Serial.println("Fetched Username: " + dynamicUsername);
+
+  
+    http.end();
+    return true;
+  }else{
+  Serial.print("HTTP error code: ");
+  Serial.println(httpResponseCode);
+  http.end();
+  return false;
+  }
+} 
+String getTimestamp(){
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    return "";
+  }
+ char buf[25];
+  strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeinfo);
+  return String(buf);
+}

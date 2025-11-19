@@ -6,6 +6,8 @@ def print_sensor_log(user_id, username, timestamp, ax, ay, az, gx, gy, gz, state
    
     print("===================================")
     print(f"📡 Data received at: {timestamp}")
+    print(f"User_id: {user_id}")
+    print(f"Username: {username}")
     print(f"  ➤ Acceleration: X={ax:.2f}, Y={ay:.2f}, Z={az:.2f}")
     print(f"  ➤ Gyroscope:     X={gx:.2f}, Y={gy:.2f}, Z={gz:.2f}")
     print(f"  ➤ Activity:      {state}")
