@@ -80,6 +80,7 @@
 }
 
 .graph-div {
+  display: flex;
   align-items: center;
   background: #1a1b2f;
   flex: 2;

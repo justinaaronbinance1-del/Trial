@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-
+import dayjs from "dayjs";
 
 import "../styles/statistics-section.css";
 import SensorData from "./connection-backend";
+import PieChart from "../components/pie-chart";
+
 
 function StatisticsSection() {
-
+  const now = dayjs();
+  const formatNow = now.format("MMM DD, YYYY");
 
   // State for daily data
   const [dailyData, setDailyData] = useState([]);
-
-  // Chart refs
-  const pieChartRef = useRef(null);
-  const pieChartInstance = useRef(null);
 
   const barChartRef = useRef(null);
   const barChartInstance = useRef(null);
@@ -21,49 +20,6 @@ function StatisticsSection() {
   const heartRateChartRef = useRef(null);
   const heartRateChartInstance = useRef(null);
 
-  // PIE CHART - updates when dailyData changes
-  useEffect(() => {
-    if (!dailyData || dailyData.length === 0) return;
-
-    let runningNum = 0;
-    let stationaryNum = 0;
-    let walkingNum = 0;
-
-    dailyData.forEach(d => {
-      if (d.stud_condition === "Running") runningNum += 1;
-      else if (d.stud_condition === "Stationary") stationaryNum += 1;
-      else if (d.stud_condition === "Walking") walkingNum += 1;
-    });
-
-    let pieLabels = ["Walking", "Stationary", "Running"];
-    let dataLabels = [walkingNum, stationaryNum, runningNum];
-    let colorLabels = ["#87CEFA", "#4169E1", "#000080"];
-
-    if (walkingNum === 0 && stationaryNum === 0 && runningNum === 0) {
-      pieLabels = ["No Readings!"];
-      dataLabels = [1];
-      colorLabels = ["#808080"];
-    }
-
-    if (!pieChartInstance.current) {
-      pieChartInstance.current = new Chart(pieChartRef.current, {
-        type: "pie",
-        data: { labels: pieLabels, datasets: [{ data: dataLabels, backgroundColor: colorLabels }] },
-        options: {
-          plugins: {
-            title: { display: true, text: "Activity Distribution", font: { size: 18 }, color: "#ffffff" },
-            legend: { position: "bottom", labels: { color: "#ffffff", font: { size: 12 } } },
-          },
-        },
-      });
-    } else {
-      const chart = pieChartInstance.current;
-      chart.data.labels = pieLabels;
-      chart.data.datasets[0].data = dataLabels;
-      chart.data.datasets[0].backgroundColor = colorLabels;
-      chart.update();
-    }
-  }, [dailyData]);
 
   // BAR & LINE CHARTS - initialize once
   useEffect(() => {
@@ -106,7 +62,6 @@ function StatisticsSection() {
 
     // CLEANUP: destroy charts on unmount
     return () => {
-      if (pieChartInstance.current) pieChartInstance.current.destroy();
       if (barChartInstance.current) barChartInstance.current.destroy();
       if (heartRateChartInstance.current) heartRateChartInstance.current.destroy();
     };
@@ -115,12 +70,13 @@ function StatisticsSection() {
   return (
     <section id="statistics" className="statistics-info-container">
       <SensorData setDailyData={setDailyData} />
-      <h2>Activity & Health Statistics </h2>
+      <h2>Activity & Health Statistics for {formatNow}</h2>
+      <div className="drop-down">dropdown </div>
       <div className="charts-container">
         <div className="chart-box">
           <h3>Activity Breakdown</h3>
           <p>Percent of time spent Active, Stationary, and Resting</p>
-          <canvas ref={pieChartRef}></canvas>
+          <PieChart dailyData={dailyData} />
         </div>
         <div className="chart-box">
           <h3>Activity Categories</h3>

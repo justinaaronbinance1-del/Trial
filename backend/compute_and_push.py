@@ -13,6 +13,7 @@ def summary_compute(cursor, user_id: int):
     """, (user_id,)) 
        
        avg_heartrate, min_heartrate, max_heartrate, reading_count = cursor.fetchone()
+       
        return avg_heartrate, min_heartrate, max_heartrate, reading_count
 
 def push_summary_db(cursor, user_id: int, data, avg_heartrate, min_heartrate, max_heartrate,reading_count):

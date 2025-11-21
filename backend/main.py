@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form
-from database import get_connection
+from database import get_connection_cursor
 from datetime import datetime, timedelta, timezone
 import mysql.connector
 from ml_models import rf_model, scaler, predict_activity, predict_condition
@@ -25,37 +25,31 @@ latest_sensor_payload = None
 
 def get_or_create_user(username: str):
   
-    connection = None
-    cursor = None
     user_id = None
     is_new_user = False
 
     try:
-        connection = get_connection()
-        cursor = connection.cursor()
+        with get_connection_cursor() as cursor:
 
-        # Check if user already exists
-        cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
-        row = cursor.fetchone()
-        if row:
-            user_id = row[0]
-            is_new_user = False  # Existing user
-        else:
-            # Create new user
-            cursor.execute("INSERT INTO users (username) VALUES (%s)", (username,))
-            connection.commit()
-            user_id = cursor.lastrowid
-            is_new_user = True  # New user
+            # Check if user already exists
+            cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
+            row = cursor.fetchone()
+
+            if row:
+                user_id = row[0]
+                is_new_user = False  # Existing user
+            else:
+                # Create new user
+                cursor.execute("INSERT INTO users (username) VALUES (%s)", (username,))
+
+                user_id = cursor.lastrowid
+                is_new_user = True  # New user
 
     except mysql.connector.Error as e:
         print("Database error in get_or_create_user:", e)
+
         user_id = None
         is_new_user = False
-    finally:
-        if cursor:
-            cursor.close()
-        if connection and connection.is_connected():
-            connection.close()
 
     return user_id, is_new_user
 
@@ -86,6 +80,7 @@ async def register_user(username: str = Form(...)):
 
     return {"status": "success", "user_id": user_id, "username": username, "message": message, "is_new_user": is_new_user}
 
+
 @app.get("/current_user")
 def current_user():
     if last_registered_user["user_id"] is None:
@@ -102,11 +97,10 @@ async def receive_data(request: Request, user_id: int = Form(...)):
     form_data = await request.form()
     data = load_sensor_data(form_data)
 
-    connection = None
-    cursor = None 
+    
     try: 
-            connection = get_connection()
-            cursor = connection.cursor()
+
+        with get_connection_cursor() as cursor:
 
             state = predict_activity(
                 data["ax"], data["ay"], data["az"],
@@ -162,17 +156,11 @@ async def receive_data(request: Request, user_id: int = Form(...)):
 
             push_summary_db(cursor,user_id, data, avg_heartrate, max_heartrate, min_heartrate, reading_count)
 
-            connection.commit()
             print("✅ Data successfully saved to heart_rate_motion_readings.")
 
     except mysql.connector.Error as e:
-            print("❌ Database error:", e)
+            print("Database error:", e)
 
-    finally: 
-        if connection:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
 
     return {
         "status": "Data received successfully ✅",
@@ -205,39 +193,43 @@ def get_latest_sensor_data():
 
 @app.get("/daily")       
 def get_daily_readings(username: str):
-    connection = None
-    cursor = None
+    
     try: 
-         connection = get_connection()
-         cursor = connection.cursor(dictionary=True)
+         with get_connection_cursor(dictionary=True) as cursor:
 
-         cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
-         user = cursor.fetchone()
-         if not user:
-            return {"status": "error", "message": "User not found"}
-         user_id = user["id"]
+            cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
+            user = cursor.fetchone()
+            if not user:
+                return {"status": "error", "message": "User not found"}
+            user_id = user["id"]
 
-         cursor.execute("""
-            SELECT * FROM heart_rate_motion_readings WHERE user_id=%s ORDER BY recorded_at ASC
-           """, (user_id,))
-         
-         daily_data = cursor.fetchall()
+            cursor.execute("""
+                SELECT * FROM heart_rate_motion_readings WHERE user_id=%s AND DATE(recorded_at) = CURDATE() ORDER BY recorded_at ASC
+            """, (user_id,))
+            
+            daily_data = cursor.fetchall()
 
-         if not daily_data:
-              return {"status": "No readings for today"}
-         return {
-              "status": "Success",
-              "count": len(daily_data),
-              "data": daily_data
+            if not daily_data:
+                return {"status": "No readings for today"}
+            return {
+                "status": "Success",
+                "count": len(daily_data),
+                "data": daily_data
 
-         }
+            }
          
     except mysql.connector.Error as e:
-         return {"error": f"Database error {e}"} 
+         print("Database error: ", e) 
          
-    finally:    
-         if connection: 
-            if connection.is_connected():
-                cursor.close()
-                connection.close() 
+@app.get("user_list")
+def get_user_list():
+    try:
+        with get_connection_cursor(dictionary=True) as cursor:
+
+            cursor.execute("SELECT username FROM users ORDER BY username ASC")
+            users = cursor.fetchall()
+            return {"users": [r["username"] for r in users]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 

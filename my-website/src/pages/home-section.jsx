@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { Textfit } from 'react-textfit';
+
 
 import "../styles/home-section.css";
 import SensorData from "./connection-backend";
+import PPGChart from "../components/ppg-chart";
 
 function HomeSection() {
 
@@ -95,21 +96,23 @@ function HomeSection() {
           </div>
 
           <div className="device-status border-effect">
-            <Textfit mode="single" min={8} max={16}><p style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusColor, display: "inline-block", }}></span>Device: <span style={{ color: statusColor }}>{device_status}</span></p></Textfit>
-            <Textfit mode="single" min={8} max={16}>  <p>User: {username}</p></Textfit>
+            <div><p style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusColor, display: "inline-block", }}></span>Device: <span style={{ color: statusColor }}>{device_status}</span></p></div >
+            <div>  <p>User: {
+              username === "" ? "None" : username
+            }</p></div >
 
           </div>
 
           <div className="sensor-info-1 border-effect">
-            <Textfit mode="single" min={8} max={16}><p>Time of Reading: </p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>{formattedTime}</p></Textfit>
+            <div><p>Time of Reading: </p></div >
+            <div><p>{formattedTime}</p></div >
 
           </div>
 
           <div className="sensor-info-1 border-effect" >
-            <Textfit mode="single" min={8} max={16}><p>Motion Sensor</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>AX:{ax} | AY:{ay} | AZ:{az}</p></Textfit>
-            <Textfit mode="single" min={8} max={16}><p>GX:{gx} | GY:{gy} | GZ:{gz}</p></Textfit>
+            <div><p>Motion Sensor</p></div >
+            <div><p>AX:{ax} | AY:{ay} | AZ:{az}</p></div >
+            <div><p>GX:{gx} | GY:{gy} | GZ:{gz}</p></div >
           </div>
 
         </div>
@@ -128,7 +131,15 @@ function HomeSection() {
           </div>
 
           <div className="graph-div">
-            <div className="waveform-text">Heartbeat (PPG) waveform</div>
+            {
+              device_status === "Connected" ? (
+                <PPGChart websocketURL="ws://esp32.local/ws" />
+              ) : (
+                <p style={{ color: "red", textAlign: "center" }}>
+                  Device not connected
+                </p>
+              )
+            }
 
           </div>
           <div className="second-stat-div">
