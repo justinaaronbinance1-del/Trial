@@ -221,7 +221,7 @@ def get_daily_readings(username: str):
     except mysql.connector.Error as e:
          print("Database error: ", e) 
          
-@app.get("user_list")
+@app.get("/user_list")
 def get_user_list():
     try:
         with get_connection_cursor(dictionary=True) as cursor:

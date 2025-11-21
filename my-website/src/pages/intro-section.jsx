@@ -20,7 +20,7 @@ function IntroSection() {
       <div className="cards">
         <div className="indiv-card">
           <h2> <Icons.Checklist />
-            Project Overview</h2>
+            Overview</h2>
           <p>A web-based system that monitors students’ vital signs and activity. Using MAX30102 and MPU6050 sensors with
             ESP32, data is analyzed by AI to detect stress or fatigue patterns.</p>
         </div>

@@ -18,7 +18,17 @@
   font-size: clamp(15px, 25px, 30px);
   color: white;
 }
-
+.drop-down {
+  padding: 10px 30px;
+  border-radius: 10px;
+  color: white;
+  background-color: #2f304a;
+  margin-bottom: 15px;
+  border: 1px solid black;
+}
+.drop-down:hover {
+  cursor: pointer;
+}
 .statistics-info-container {
   font-size: 16px;
   color: white;
@@ -84,7 +94,8 @@
   aspect-ratio: 1 / 1;
 }
 
-.chart-box:hover {
+.chart-box:hover,
+.drop-down:hover {
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(108, 99, 255, 0.4);
   background: linear-gradient(145deg, #2f304a, #1f2033);
   border: 1px solid rgba(108, 99, 255, 0.5);

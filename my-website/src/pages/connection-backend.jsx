@@ -1,10 +1,12 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const BACKEND_URL_LATEST = "http://localhost:8000/latest";
 const BACKEND_URL_DAILY = "http://localhost:8000/daily";
+const BACKEND_URL_USERS_LIST = "http://localhost:8000/user_list";
 
-const SensorData = ({ username, setLatestData, setDailyData }) => {
+
+const SensorData = ({ username, setLatestData, setDailyData, setUserList }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,6 +35,8 @@ const SensorData = ({ username, setLatestData, setDailyData }) => {
     return () => clearInterval(interval);
   }, [setLatestData, username]);
 
+
+
   useEffect(() => {
     if (!setDailyData || !username) return;
     const fetchDaily = async () => {
@@ -56,6 +60,26 @@ const SensorData = ({ username, setLatestData, setDailyData }) => {
     return () => clearInterval(interval);
   }, [setDailyData, username]);
 
+  useEffect(() => {
+    if (!setUserList) return;
+
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(BACKEND_URL_USERS_LIST);
+        const json = await response.json();
+
+        if (json.users) {
+          setUserList(json.users);
+        }
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+    fetchUsers();
+    const interval = setInterval(fetchUsers, 10000);
+    return () => clearInterval(interval);
+
+  }, [setUserList]);
 
 
   return null;

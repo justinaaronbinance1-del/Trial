@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 
 
@@ -96,7 +96,7 @@ function LandingPage() {
           </Link>
           <Link to="about-us"
             smooth={false}
-            offset={offsetNum}
+            offset={-75}
             className={`button-nav-link ${active === "about-us" ? "active" : ""}`} >
             About Us
           </Link>

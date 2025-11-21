@@ -27,6 +27,9 @@ h1 {
   transition: text-shadow 0.35s ease, transform 0.35s ease;
   cursor: pointer;
 }
+.sub-title {
+  margin-bottom: clamp(30px 50px 60px);
+}
 .main-title:hover,
 .sub-title:hover {
   color: #ffffff;

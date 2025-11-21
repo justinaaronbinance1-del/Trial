@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import dayjs from "dayjs";
+import { formatTooltipLabel } from "../helper/chart-helper";
 
 function BarAndLineChart({ dailyData }) {
   const barAndLineChartRef = useRef(null);
@@ -9,7 +9,7 @@ function BarAndLineChart({ dailyData }) {
   useEffect(() => {
     if (!dailyData || dailyData.length === 0) return;
 
-    const labels = dailyData.map(d => d.recorded_at);
+    const xLabels = dailyData.map((_, index) => index + 1);
     const heartRateData = dailyData.map(d => d.heartRate);
     const activityData = dailyData.map(d => {
       if (d.predicted_activity === "Stationary") return 0;
@@ -28,7 +28,7 @@ function BarAndLineChart({ dailyData }) {
     chartInstance.current = new Chart(barAndLineChartRef.current, {
       type: "bar",
       data: {
-        labels,
+        labels: xLabels,
         datasets: [
           {
             type: "line",
@@ -44,9 +44,9 @@ function BarAndLineChart({ dailyData }) {
             type: "bar",
             label: "Activity",
             data: activityData,
-            backgroundColor: dailyData.map(d => {
-              d.stud_condition !== "Normal" ? "#FF0000" : activityColor[d.predicted_activity]
-            }),
+            backgroundColor: dailyData.map(d =>
+              d.stud_condition !== "Normal" ? "#FF0000" : (activityColor[d.predicted_activity] || "#808080")
+            ),
             yAxisID: "y2",
           },
 
@@ -55,6 +55,13 @@ function BarAndLineChart({ dailyData }) {
       options: {
         responsive: true,
         plugins: {
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return formatTooltipLabel(dailyData, context.dataIndex);
+              }
+            }
+          },
           legend: {
             position: "bottom",
             labels: { color: "rgb(255,255,255)" },
