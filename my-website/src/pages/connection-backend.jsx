@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const BACKEND_URL_LATEST = "http://localhost:8000/latest";
 const BACKEND_URL_DAILY = "http://localhost:8000/daily";
 const BACKEND_URL_USERS_LIST = "http://localhost:8000/user_list";
-const BACKEND_URL_HISTORY = "http://localhost:8000";
+const BACKEND_URL_HISTORY = "http://localhost:8000/history";
 
 const SensorData = ({ username, setLatestData, setDailyData, setUserList, setHistory }) => {
   const [loading, setLoading] = useState(true);
@@ -82,7 +82,7 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList, setHis
   }, [setUserList]);
 
 
-  useInsertionEffect(() => {
+  useEffect(() => {
     if (!setHistory || username) return;
 
     const fetchHistory = async () => {
@@ -108,4 +108,4 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList, setHis
 
 export default SensorData;
 
-//iimport na sa may history part
+
