@@ -231,5 +231,87 @@ def get_user_list():
             return {"users": [r["username"] for r in users]}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+    
+@app.get("/history")
+def get_history(username: str):
+
+    try: 
+        with get_connection_cursor(dictionary=True) as cursor: 
+            ## User id
+            cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
+            user = cursor.fetchone()
+            if not user:
+                return {"status": "error", "message": "user not found"}
+            user_id = user["id"]
+
+            ##Latest readings
+            cursor.execute(
+                """
+                SELECT id, recorded_at, heart_rate, predicted_activity, stud_condition  FROM heart_rate_motion_redings
+                WHERE user_id=%s 
+                ORDER BY recorded_at DESC
+                LIMIT 1
+                """, (user_id,)
+            )
+            latest_reading = cursor.fetchone()
+
+            ##latest summary
+            cursor.execute("""
+                SELECT avg_heart_rate, min_heart_rate, max_heart_rate, total_readings
+                FROM heart_rate_summary
+                WHERE user_id=%s
+                ORDER BY summary_date DESC
+                LIMIT 1
+            """, (user_id,))
+            summary = cursor.fetchone()
+
+            ##full history
+            # 4. Full history list (no timestamps removed here)
+            cursor.execute("""
+                SELECT id, recorded_at, heart_rate, predicted_activity, stud_condition
+                FROM heart_rate_motion_readings
+                WHERE user_id=%s
+                ORDER BY recorded_at DESC
+            """, (user_id,))
+            history = cursor.fetchall()
+
+            # -------- MERGED BLOCK for card display --------
+            merged_latest = None
+            if latest_reading:
+                merged_latest = {
+                    "heartRate": latest_reading["heart_rate"],
+                    "activity": latest_reading["predicted_activity"],
+                    "anomaly": latest_reading["stud_condition"],
+                    "avgBpm": summary["avg_heart_rate"] if summary else None,
+                    "minBpm": summary["min_heart_rate"] if summary else None,
+                    "maxBpm": summary["max_heart_rate"] if summary else None,
+                    "totalReadings": summary["total_readings"] if summary else None
+                }
+
+            # -------- HISTORY LIST --------
+            history_list = [
+                {
+                    "id": row["id"],
+                    "timestamp": row["recorded_at"],
+                    "heartRate": row["heart_rate"],
+                    "activity": row["predicted_activity"],
+                    "anomaly": row["stud_condition"]
+                }
+                for row in history
+            ]
+
+            return {
+                "status": "success",
+                "username": username,
+                "latest": merged_latest,
+                "history": history_list
+            }
+
+
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 
 

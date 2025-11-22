@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 const BACKEND_URL_LATEST = "http://localhost:8000/latest";
 const BACKEND_URL_DAILY = "http://localhost:8000/daily";
 const BACKEND_URL_USERS_LIST = "http://localhost:8000/user_list";
+const BACKEND_URL_HISTORY = "http://localhost:8000";
 
-
-const SensorData = ({ username, setLatestData, setDailyData, setUserList }) => {
+const SensorData = ({ username, setLatestData, setDailyData, setUserList, setHistory }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList }) => {
 
 
   useEffect(() => {
-    if (!setDailyData || !username) return;
+    if (!setDailyData) return;
     const fetchDaily = async () => {
       try {
         console.log("Fetching Daily Readings for:", username);
@@ -82,7 +82,30 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList }) => {
   }, [setUserList]);
 
 
+  useInsertionEffect(() => {
+    if (!setHistory || username) return;
+
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL_HISTORY}?username=${encodeURIComponent(username)}`);
+        const json = await res.json();
+
+        if (json.status === "success") {
+          setHistory(json);
+
+        }
+      } catch (error) {
+        console.erro("Error Fetching history", error);
+      }
+    };
+    fetchHistory();
+    const interval = setInterval(fetchHistory, 10000);
+    return () => clearInterval(interval);
+  }, [setHistory, username]);
+
   return null;
 };
 
 export default SensorData;
+
+//iimport na sa may history part
