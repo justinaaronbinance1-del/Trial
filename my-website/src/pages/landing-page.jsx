@@ -58,7 +58,7 @@ function LandingPage() {
   const offsetNum = -120;
 
   return (
-    <div>
+    <>
 
       <header className="header">
         <Link to="Intro"
@@ -115,7 +115,7 @@ function LandingPage() {
       <FooterSection />
 
 
-    </div>
+    </>
   );
 }
 

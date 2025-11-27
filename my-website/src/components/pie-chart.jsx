@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
 
-function PieChart({ dailyData }) {
+function PieChart({ dailyData, selectedUser }) {
 
 
   const pieChartRef = useRef(null);
@@ -9,6 +9,7 @@ function PieChart({ dailyData }) {
 
   useEffect(() => {
     if (!dailyData || dailyData.length === 0) return;
+    if (!pieChartRef.current) return;
 
     let runningNum = 0;
     let stationaryNum = 0;
@@ -25,38 +26,49 @@ function PieChart({ dailyData }) {
     const dataLabels = [walkingNum, stationaryNum, runningNum];
     const colorLabels = ["#87CEFA", "#4169E1", "#000080"];
 
-    if (chartInstance.current) chartInstance.current.destroy();
+    if (!chartInstance.current) {
+      chartInstance.current = new Chart(pieChartRef.current, {
+        type: "pie",
+        data: {
+          labels: pieLabels,
+          datasets: [{
+            data: dataLabels,
+            backgroundColor: colorLabels
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Activity Distribution",
+              font: { size: 18 },
+              color: "#ffffff"
+            },
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "#ffffff",
+                font: { size: 12 }
 
-    chartInstance.current = new Chart(pieChartRef.current, {
-      type: "pie",
-      data: {
-        labels: pieLabels,
-        datasets: [{
-          data: dataLabels,
-          backgroundColor: colorLabels
-        }]
-      },
-      options: {
-        plugins: {
-          title: {
-            display: true,
-            text: "Activity Distribution",
-            font: { size: 18 },
-            color: "#ffffff"
-          },
-          legend: {
-            position: "bottom",
-            labels: {
-              color: "#ffffff",
-              font: { size: 12 }
-
-            }
+              }
+            },
           },
         },
-      },
-    });
-    return () => chartInstance.current?.destroy();
+      });
+
+    } else {
+      chartInstance.current.data.datasets[0].data = dataLabels;
+      chartInstance.current.update("none");
+    }
+
   }, [dailyData]);
+  useEffect(() => {
+    return () => {
+      chartInstance.current?.destroy();
+      chartInstance.current = null;
+    };
+  }, [selectedUser]);
+
   return <canvas ref={pieChartRef}></canvas>;
 }
 export default PieChart;

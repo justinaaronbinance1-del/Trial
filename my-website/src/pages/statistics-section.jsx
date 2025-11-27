@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 
 import "../styles/statistics-section.css";
@@ -16,18 +16,27 @@ function StatisticsSection() {
   const [dailyData, setDailyData] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
-  const [latestData, setLatestData] = useState(null);
+
 
   const handleUserChange = (e) => {
-    setSelectedUser(e.target.value);
+    const selected = e.target.value;
+    setSelectedUser(selected);
+    setDailyData([]);
+
+
   }
+  useEffect(() => {
+    console.log("🟦 DAILY DATA UPDATED:", dailyData);
+  }, [dailyData]);
 
   return (
     <section id="statistics" className="statistics-info-container">
-      <SensorData username={selectedUser} setDailyData={setDailyData}
+      <SensorData
+        username={selectedUser}
+        setDailyData={setDailyData}
         setUserList={setUsers}
-        setLatestData={setLatestData}
       />
+
       <h2>Activity & Health Statistics for {formatNow}</h2>
       <div className="drop-down-holder">
         <select className="drop-down" value={selectedUser} onChange={handleUserChange}>
@@ -43,17 +52,17 @@ function StatisticsSection() {
         <div className="chart-box">
           <h3>Activity Breakdown</h3>
           <p>Percent of time spent Active, Stationary, and Resting</p>
-          <PieChart dailyData={dailyData} />
+          <PieChart dailyData={dailyData} selectedUser={selectedUser} />
         </div>
         <div className="chart-box">
           <h3>Activity Categories</h3>
           <p>Visual comparison of different activity levels (in minutes)</p>
-          <BarAndLineChart dailyData={dailyData} />
+          <BarAndLineChart dailyData={dailyData} selectedUser={selectedUser} />
         </div>
         <div className="chart-box">
           <h3>Heart Rate Monitoring</h3>
           <p>Track resting vs active heart rate over time (beats per minute)</p>
-          <LineChart dailyData={dailyData} />
+          <LineChart dailyData={dailyData} selectedUser={selectedUser} />
         </div>
       </div>
     </section>

@@ -68,7 +68,9 @@ function HomeSection() {
   let condition_of_student = studentCondition(stud_condition);
 
   const statusColor = device_status === "Connected" ? "green" : "red";
-  const formattedTime = dayjs(timestamp).format("MMM DD, YYYY | hh:mm A");
+  const formattedTime = dayjs(timestamp).format("hh:mm A");
+  const wholeNum = Math.round(avg_heartrate);
+
 
   return (
     <section id="home" className="home-section">
@@ -97,20 +99,20 @@ function HomeSection() {
 
           <div className="device-status border-effect">
             <div><p style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}><span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: statusColor, display: "inline-block", }}></span>Device: <span style={{ color: statusColor }}>{device_status}</span></p></div >
-            <div>  <p>User: {
+            <div>  <p className="lg">User: {
               username === "" ? "None" : username
             }</p></div >
 
           </div>
 
           <div className="sensor-info-1 border-effect">
-            <div><p>Time of Reading: </p></div >
-            <div><p>{formattedTime}</p></div >
+            <div><p >Time of Reading: {formattedTime}</p></div >
+            <div><p >Anomaly Details: {stud_condition}</p></div >
 
           </div>
 
           <div className="sensor-info-1 border-effect" >
-            <div><p>Motion Sensor</p></div >
+            <div><p className="lg">Motion Sensor</p></div >
             <div><p>AX:{ax} | AY:{ay} | AZ:{az}</p></div >
             <div><p>GX:{gx} | GY:{gy} | GZ:{gz}</p></div >
           </div>
@@ -147,7 +149,7 @@ function HomeSection() {
             <div className="stat-box lg">Max HR</div>
             <div className="stat-box lg">Min HR</div>
             <div className="stat-box lg">Readings</div>
-            <div className="stat-box bold">{avg_heartrate} BPM</div>
+            <div className="stat-box bold">{wholeNum} BPM</div>
             <div className="stat-box bold">{max_heartrate} BPM</div>
             <div className="stat-box bold">{min_heartrate} BPM</div>
             <div className="stat-box bold">{reading_count}</div>

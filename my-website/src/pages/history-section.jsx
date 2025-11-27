@@ -1,88 +1,98 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import SensorData from "./connection-backend";
 import "../styles/history-section.css";
 
-function HistorySection() {
-  const [historyData, setHistoryData] = useState([]);
 
-  useEffect(() => {
-    // data natin dito 
-    const sampleData = [
-      {
-        id: 1,
-        patientName: "Michael Owhen",
-        date: dayjs("2025-10-17T14:32:00").format("YYYY-MM-DD"),
-        time: dayjs("2025-10-17T14:32:00").format("hh:mm A"),
-        heartRate: 82,
-        avgBpm: 80,
-        maxBpm: 96,
-        minBpm: 68,
-        activity: "Active",
-        anomaly: "Normal",
-      },
-      {
-        id: 2,
-        patientName: "Soriano",
-        date: dayjs("2025-10-17T09:15:00").format("YYYY-MM-DD"),
-        time: dayjs("2025-10-17T09:15:00").format("hh:mm A"),
-        heartRate: 95,
-        avgBpm: 88,
-        maxBpm: 120,
-        minBpm: 72,
-        activity: "Resting",
-        anomaly: "Abnormal spike detected",
-      },
-      {
-        id: 3,
-        patientName: "Dan",
-        date: dayjs("2025-10-17T08:00:00").format("YYYY-MM-DD"),
-        time: dayjs("2025-10-17T08:00:00").format("hh:mm A"),
-        heartRate: 70,
-        avgBpm: 75,
-        maxBpm: 90,
-        minBpm: 65,
-        activity: "Stationary",
-        anomaly: "Normal",
-      },
-    ];
-    setHistoryData(sampleData);
-  }, []);
+function HistorySection() {
+  const [latestHistory, setLatestHistory] = useState([]); // all users’ latest + history
+  const [flippedCards, setFlippedCards] = useState({});   // track flip state per user
+
+  const toggleFlip = (username) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [username]: !prev[username]
+    }));
+  };
 
   return (
-    <section id="history" className="history-info-container">
-      <h2>Patient History</h2>
+    <>
+      {/* Fetch all users’ latest readings + last 10 readings */}
+      <SensorData setLatestHistory={setLatestHistory} />
+      {console.log("Latest History Data:", latestHistory)}
 
-      <div className="history-row">
-        {historyData.map((record) => (
-          <div key={record.id} className="history-card horizontal-card">
-            <div className="history-header">
-              <h3>{record.patientName}</h3>
-              <p>
-                {record.date} — {record.time}
-              </p>
-            </div>
+      <section id="history" className="history-info-container">
+        <h2>Patient History</h2>
 
-            <div className="history-details">
-              <div><span>Heart Rate:</span> {record.heartRate} bpm</div>
-              <div><span>Activity:</span> {record.activity}</div>
-              <div>
-                <span>Anomaly:</span>{" "}
-                <span
-                  className={
-                    record.anomaly === "Normal" ? "normal" : "abnormal"
-                  }
-                >
-                  {record.anomaly}
-                </span>
+        <div className="history-row">
+          {latestHistory.map(user => (
+            <div
+              key={user.username}
+              className={`history-card horizontal-card ${flippedCards[user.username] ? "flipped" : ""}`}
+              onClick={() => toggleFlip(user.username)}
+            >
+              {/* FRONT: Latest Reading */}
+              <div className="card-front">
+                <div className="history-header">
+                  <h3>{user.username}</h3>
+                  {user.latest?.recorded_at && (
+                    <p>
+                      {dayjs(user.latest.recorded_at).format("YYYY-MM-DD")} —{" "}
+                      {dayjs(user.latest.recorded_at).format("hh:mm A")}
+                    </p>
+                  )}
+                </div>
+
+                {user.latest && (
+                  <div className="history-details">
+                    <div><span>Heart Rate:</span> {user.latest.heartRate} bpm</div>
+                    <div><span>Activity:</span> {user.latest.activity}</div>
+                    <div>
+                      <span>Anomaly:</span>{" "}
+                      <span className={user.latest.anomaly === "Normal" ? "normal" : "abnormal"}>
+                        {user.latest.anomaly}
+                      </span>
+                    </div>
+                    <div><span>Avg BPM:</span> {user.latest.avgBpm || "-"}</div>
+                    <div><span>Max BPM:</span> {user.latest.maxBpm || "-"}</div>
+                    <div><span>Min BPM:</span> {user.latest.minBpm || "-"}</div>
+                  </div>
+                )}
               </div>
-              <div><span>Avg BPM:</span> {record.avgBpm}</div>
-              <div><span>Max BPM:</span> {record.maxBpm}</div>
-              <div><span>Min BPM:</span> {record.minBpm}</div>
+
+              {/* BACK: Last 10 Readings Table */}
+              <div className="card-back">
+                <h4>Last 10 Readings</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>HR</th>
+                      <th>Activity</th>
+                      <th>Anomaly</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {user.history?.map(record => (
+                      <tr key={record.id}>
+                        <td>{dayjs(record.timestamp).format("YYYY-MM-DD")}</td>
+                        <td>{dayjs(record.timestamp).format("hh:mm A")}</td>
+                        <td>{record.heartRate}</td>
+                        <td>{record.activity}</td>
+                        <td className={record.anomaly === "Normal" ? "normal" : "abnormal"}>
+                          {record.anomaly}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 
