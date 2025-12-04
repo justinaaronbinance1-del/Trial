@@ -29,14 +29,14 @@ def get_or_create_user(username: str):
     is_new_user = False
 
     try:
-        with get_connection_cursor() as cursor:
+        with get_connection_cursor(dictionary=False) as cursor:
 
             # Check if user already exists
             cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
             row = cursor.fetchone()
 
             if row:
-                user_id = row[0]
+                user_id = row["id"]
                 is_new_user = False  # Existing user
             else:
                 # Create new user

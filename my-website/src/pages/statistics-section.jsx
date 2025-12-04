@@ -63,10 +63,12 @@ function StatisticsSection() {
           <h3>Heart Rate Monitoring</h3>
           <p>Track resting vs active heart rate over time (beats per minute)</p>
           <LineChart dailyData={dailyData} selectedUser={selectedUser} />
+
         </div>
       </div>
     </section>
   );
 }
+
 
 export default StatisticsSection;

@@ -5,8 +5,9 @@ import "../styles/history-section.css";
 
 
 function HistorySection() {
-  const [latestHistory, setLatestHistory] = useState([]); // all users’ latest + history
-  const [flippedCards, setFlippedCards] = useState({});   // track flip state per user
+  const [latestHistory, setLatestHistory] = useState([]);
+  const [flippedCards, setFlippedCards] = useState({});
+
 
   const toggleFlip = (username) => {
     setFlippedCards(prev => ({
@@ -22,6 +23,8 @@ function HistorySection() {
       {console.log("Latest History Data:", latestHistory)}
 
       <section id="history" className="history-info-container">
+
+
         <h2>Patient History</h2>
 
         <div className="history-row">
