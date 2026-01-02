@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 
-
 import "../styles/home-section.css";
 import SensorData from "./connection-backend";
 import PPGChart from "../components/ppg-chart";
 
 function HomeSection() {
 
-
   const [sensorData, setSensorData] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [username, setUsername] = useState("");
 
+  const {
+    timestamp = "--", ax = "--", ay = "--", az = "--", gx = "--", gy = "--", gz = "--", heart_rate = "--", spo2 = "--", predicted_activity = "--", stud_condition = "--", avg_heartrate = "--", min_heartrate = "--", max_heartrate = "--", reading_count = "--", device_status = "Disconnected"
+  } = sensorData || {};
+
 
   const handleChange = (e) => {
-    setInputValue(e.target.value); // Update state when input changes
+    setInputValue(e.target.value);
   };
 
   const handleClick = async () => {
@@ -34,7 +36,7 @@ function HomeSection() {
 
       if (result.status.toLowerCase() === "success") {
         alert(result.message);
-        setUsername(result.username); // pass this to SensorData
+        setUsername(result.username);
       } else {
         alert(`Error: ${result.message}`);
       }
@@ -44,11 +46,6 @@ function HomeSection() {
     }
     setInputValue("");
   };
-
-  const {
-    timestamp = "--", ax = "--", ay = "--", az = "--", gx = "--", gy = "--", gz = "--", heart_rate = "--", spo2 = "--", predicted_activity = "--", stud_condition = "--", avg_heartrate = "--", min_heartrate = "--", max_heartrate = "--", reading_count = "--", device_status = "Disconnected"
-  } = sensorData || {};
-
 
   function studentCondition(condition) {
     let message;
@@ -71,12 +68,10 @@ function HomeSection() {
   const formattedTime = dayjs(timestamp).format("hh:mm A");
   const wholeNum = Math.round(avg_heartrate);
 
-
   return (
     <section id="home" className="home-section">
       {
         username && (
-
           <SensorData
             username={username}
             setLatestData={setSensorData} />
@@ -84,7 +79,6 @@ function HomeSection() {
 
       <div
         className="info-container"
-
       >
         <div className="first-container ">
           <div className="user-and-button">

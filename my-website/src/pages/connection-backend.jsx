@@ -7,8 +7,10 @@ const BACKEND_URL_USERS_LIST = "http://localhost:8000/user_list";
 const BACKEND_URL_HISTORY = "http://localhost:8000/history";
 
 const SensorData = ({ username, setLatestData, setDailyData, setUserList, setLatestHistory }) => {
+
   const [loading, setLoading] = useState(true);
 
+  // Latest Data Endpoint
   useEffect(() => {
     if (!setLatestData || !username) return;
 
@@ -36,7 +38,7 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList, setLat
   }, [setLatestData, username]);
 
 
-
+  //Daily Data Endpoint
   useEffect(() => {
     if (!setDailyData || !username) return;
     const fetchDaily = async () => {
@@ -60,6 +62,7 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList, setLat
     return () => clearInterval(interval);
   }, [setDailyData, username]);
 
+  //Userlist Endpoint
   useEffect(() => {
     if (!setUserList) return;
 
@@ -81,7 +84,7 @@ const SensorData = ({ username, setLatestData, setDailyData, setUserList, setLat
 
   }, [setUserList]);
 
-
+  //History Endpoint
   useEffect(() => {
     if (!setLatestHistory) return;
 

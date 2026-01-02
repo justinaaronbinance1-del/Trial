@@ -12,7 +12,7 @@ def get_connection():
         )
         return connection
     except Error as e:
-        print("❌ Error connecting to MySQL:", e)
+        print("Error connecting to MySQL:", e)
         return None
 
 @contextmanager

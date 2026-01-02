@@ -1,11 +1,10 @@
 
 
-
 def print_sensor_log(user_id, username, timestamp, ax, ay, az, gx, gy, gz, state, heartRate_stat, spo2_stat, stud_condition, avg_heartrate, max_heartrate,
                      min_heartrate, reading_count):
    
     print("===================================")
-    print(f"📡 Data received at: {timestamp}")
+    print(f"Data received at: {timestamp}")
     print(f"User_id: {user_id}")
     print(f"Username: {username}")
     print(f"  ➤ Acceleration: X={ax:.2f}, Y={ay:.2f}, Z={az:.2f}")

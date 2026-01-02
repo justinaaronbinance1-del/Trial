@@ -18,7 +18,7 @@ function HistorySection() {
 
   return (
     <>
-      {/* Fetch all users’ latest readings + last 10 readings */}
+
       <SensorData setLatestHistory={setLatestHistory} />
       {console.log("Latest History Data:", latestHistory)}
 
@@ -34,7 +34,7 @@ function HistorySection() {
               className={`history-card horizontal-card ${flippedCards[user.username] ? "flipped" : ""}`}
               onClick={() => toggleFlip(user.username)}
             >
-              {/* FRONT: Latest Reading */}
+
               <div className="card-front">
                 <div className="history-header">
                   <h3>{user.username}</h3>
@@ -63,7 +63,7 @@ function HistorySection() {
                 )}
               </div>
 
-              {/* BACK: Last 10 Readings Table */}
+
               <div className="card-back">
                 <h4>Last 10 Readings</h4>
                 <table>
