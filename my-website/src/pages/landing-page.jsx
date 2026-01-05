@@ -13,6 +13,7 @@ import StatisticsSection from "./statistics-section";
 import AboutSection from "./about-section";
 import HistorySection from "./history-section";
 import FooterSection from "./footer-section";
+import UserAgreement from "./user-agreement";
 
 function LandingPage() {
   const [active, setActive] = useState("home");
@@ -53,6 +54,7 @@ function LandingPage() {
 
   return (
     <>
+      <UserAgreement />
       <header className="header">
 
         <Link to="Intro"

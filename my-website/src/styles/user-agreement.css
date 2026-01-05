@@ -1,0 +1,106 @@
+/* Overlay blocks entire screen */
+.agreement-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px; /* allows spacing on small screens */
+}
+
+/* Agreement box */
+.agreement-box {
+  background: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh; /* prevents overflow on small screens */
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  overflow-y: auto; /* scroll inside the box */
+}
+
+/* Headings */
+.agreement-box h2 {
+  color: #0f172a;
+  margin-bottom: 12px;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
+
+/* Paragraphs */
+.agreement-box p {
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  color: #334155;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.agreement-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.agreement-buttons button {
+  flex: 1 1 120px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Accept / Decline colors */
+.accept {
+  background-color: #22c55e;
+  color: white;
+}
+
+.decline {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Decline message */
+.decline-message {
+  margin-top: 16px;
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+/* Button base */
+.agreement-buttons button {
+  flex: 1 1 120px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+/* Hover effect (desktop) */
+.agreement-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.95;
+}
+
+/* Click / active effect */
+.agreement-buttons button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2) inset;
+  opacity: 0.9;
+}
+
+/* Optional: focus for accessibility */
+.agreement-buttons button:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
