@@ -10,10 +10,11 @@ load_dotenv()
 def get_connection():
    try:
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="health_monitoring",
+        host=os.environ.get("DB_HOST"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD"),
+        database=os.environ.get("MYSQL_DATABASE"),
+        port=os.environ.get("DB_PORT")
             
         )
         return connection
