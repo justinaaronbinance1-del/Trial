@@ -14,21 +14,20 @@ function FooterSection() {
 
         {/* Quick Links */}
         <div className="footer-section">
-          <h4>Developers</h4>
-          <p>Phone: +63 9456789911</p>
-          <p>Location: Philippines</p>
-          <p>Phone: +63 9456789911</p>
-          <p>Location: Philippines</p>
+          <h4>Front-end Developers</h4>
+          <p>Roldan Aguila</p>
+          <p>Kimberly Luceñada</p>
+          <p>Audrei Lopez</p>
+          <p>Yuri Gwynette Padua</p>
 
 
         </div>
         <div className="footer-section">
-          <h4></h4>
-          <h4></h4>
-          <p>Phone: +63 9456789911</p>
-          <p>Location: Philippines</p>
-          <p>Phone: +63 9456789911</p>
-          <p>Location: Philippines</p>
+          <h4>Back-end Developers</h4>
+          <p>Albert De Villa</p>
+          <p>Justin Aaron Soriano</p>
+          <p>Michael Owhen Bughaw II</p>
+
 
 
         </div>

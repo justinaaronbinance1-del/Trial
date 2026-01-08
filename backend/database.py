@@ -1,17 +1,23 @@
+import os
 import mysql.connector
 from mysql.connector import Error
 from contextlib import contextmanager
+from dotenv import load_dotenv
+
+
+load_dotenv() 
 
 def get_connection():
-    try:
+   try:
         connection = mysql.connector.connect(
-            host="localhost",        
-            user="root",           
-            password="",            
-            database="health_monitoring"  
+            host="localhost",
+            user="root",
+            password="",
+            database="health_monitoring",
+            
         )
         return connection
-    except Error as e:
+   except Error as e:
         print("Error connecting to MySQL:", e)
         return None
 
